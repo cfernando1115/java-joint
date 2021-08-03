@@ -1,0 +1,23 @@
+    <%- include('../shared/head.ejs') %>
+    <link rel="stylesheet" href="/css/manager.css">
+    <link rel="stylesheet" href="/css/nav.css">
+</head>
+<body>
+    <%- include('../shared/nav.ejs') %>
+    <main>
+        <div class="form-container">
+            <h2><%= docTitle %></h2>
+            <form id="add-item-form" class="add-item-form" method="POST" action="/manager/add-item">
+                <label class="form__label" for="title">Title</label>
+                <input type="text" class="form__input" name="title" />
+                <label class="form__label" for="price">Price</label>
+                <input type="number" step="0.01" class="form__input" name="price" />
+                <label class="form__label" for="description">Description</label>
+                <textarea class="form__textarea" rows="5"></textarea>
+                <label class="form__label" for="imagePath">Image Path</label>
+                <input type="text" class="form__input" for="imagePath" />
+            </form>
+        </div>
+    </main>
+
+<%- include('../shared/end.ejs') %>

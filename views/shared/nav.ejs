@@ -1,0 +1,14 @@
+<nav class="nav">
+    <a href="/"><img src="/img/logo-sm.png" /></a>
+    <h2 class="nav__heading">JavaJoint</h2>
+    <ul class="nav__link-list">
+        <% if(role==="manager") { %>
+            <li class="link-list__item"><a class="nav__link">Menu</a></li>
+            <li class="link-list__item"><a href="/manager/add-item" class="nav__link">Add Item</a></li>
+        <% } %>
+        <% if(role==="guest") { %>
+            <li class="link-list__item"><a class="nav__link">Menu</a></li>
+            <li class="link-list__item"><a class="nav__link">Bill</a></li>
+        <% } %>
+    </ul>
+</nav>

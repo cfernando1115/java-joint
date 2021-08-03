@@ -1,0 +1,26 @@
+<%- include('../shared/head.ejs') %>
+        <link rel="stylesheet" href="/css/home.css"> 
+        <link rel="stylesheet" href="/css/nav.css">       
+    </head>
+    <body>
+        <%- include('../shared/nav.ejs') %>
+
+        <div class="home">
+            <img class="home__logo" src="/img/logo.png" alt="logo" />
+            <h2 class="home__heading">Welcome to JavaJoint!</h2>
+        </div>
+        <div class="role">
+            <h3>Start by selecting your role...</h3>
+            <ul class="role__list">
+                <li class="role__list--item">
+                    <a href="/manager" class="role__list--link"><i class="fas fa-tasks role__list--icon"></i></a>
+                    <b>Manager</b>
+                </li>
+                <li class="role__list--item">
+                    <a href="/guest" class="role__list--link"><i class="fa fa-utensils role__list--icon"></i></a>
+                    <b>Guest</b>
+                </li>
+            </ul>
+        </div>
+
+    <%- include('../shared/end.ejs') %>
