@@ -24,6 +24,6 @@ app.use(homeRoutes);
 
 app.use(errorController.error404);
 
-dbConnect((result) => {
+dbConnect(() => {
     app.listen(3000);
 })

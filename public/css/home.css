@@ -2,9 +2,10 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    height: 50%;
+    height: 40%;
     margin-top: 5%;
     color: var(--brown);
+    padding: 2%;
 }
 
 .home__heading {
@@ -53,4 +54,8 @@
     padding: 20px;
     font-size: 200%;
     color: var(--brown);
+}
+
+@media (max-width: 768px) {
+
 }

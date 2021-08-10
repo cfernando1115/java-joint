@@ -3,6 +3,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -10,10 +11,16 @@ body {
     height: 100vh;
     background-image: linear-gradient(rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0.5)), url('../img/home-background.jpg');
     background-size: cover;
+    width: 100%;
 }
 
 :root{
     --brown: #a0522d;
     --cream: #fdfdfc;
+    --mid: #dabbad;
+}
+
+@media (max-width: 768px) {
+
 }
 

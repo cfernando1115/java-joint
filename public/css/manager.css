@@ -1,3 +1,24 @@
+/***** reusable *****/
+
+.btn {
+    border: none;
+    font-family: inherit;
+    background-color: var(--cream);
+    color: var(--brown);
+    -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 5px 15px;
+}
+
+.btn:hover {
+    background-color: var(--mid);
+    color: black;
+    transition-duration: .5s;
+}
+/***** add/edit forms *****/
+
 .form-container {
     margin-top: 5%;
     display: flex;
@@ -36,8 +57,82 @@
     font-weight: 400;
 }
 
+.btn--submit {
+    margin-top: 20px;
+}
+
+/***** ingredients *****/
+
+.ingredients {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.ing-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cream);
+    border-radius: 5px;
+    -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    width: 10%;
+    margin: 2%;
+}
+
+.image-container {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.ing-image {
+    max-height: 150px;
+    max-width: 100%;
+    border-radius: 5px 5px 0 0;
+}
+
+.ing-title {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.ing-price {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.btns__container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.btn--ing {
+    text-decoration: none;
+    font-size: 100%;
+}
+
 @media (max-width: 768px) {
     .add-item-form {
         width: 100%;
+    }
+
+    .form__input,
+    .form__textarea {
+        width: 75%;
+    }
+
+    .form__label {
+        width: 75%;
+    }
+
+    .ingredients {
+        flex-direction: column;
+    }
+
+    .ing-container {
+        width: 70%;
     }
 }

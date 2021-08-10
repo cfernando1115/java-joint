@@ -1,10 +1,25 @@
 <nav class="nav">
-    <a href="/"><img src="/img/logo-sm.png" /></a>
-    <h2 class="nav__heading">JavaJoint</h2>
+    <div>
+        <a href="/"><img src="/img/logo-sm.png" /></a>
+        <h2 class="nav__heading">JavaJoint</h2>
+    </div>
     <ul class="nav__link-list">
         <% if(role==="manager") { %>
-            <li class="link-list__item"><a class="nav__link">Menu</a></li>
-            <li class="link-list__item"><a href="/manager/add-item" class="nav__link">Add Item</a></li>
+            <li class="link-list__item nav-dropdown">
+                <a class="nav__link">Ingredients</a>
+                <ul class="nav-dropdown__content">
+                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested" href="/manager/ingredients" >Ingredients</a></li>
+                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested" href="/manager/add-ingredient" >Add Ingredient</a></li>
+                </ul>
+            </li>
+            <li class="link-list__item nav-dropdown">
+                <a class="nav__link">Menu</a>
+                <ul class="nav-dropdown__content">
+                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested">Items</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="#" class="nav__link nav__link--nested">Add Menu Item</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="#" class="nav__link nav__link--nested">View Menu</a></li>
+                </ul>
+            </li>
         <% } %>
         <% if(role==="guest") { %>
             <li class="link-list__item"><a class="nav__link">Menu</a></li>
