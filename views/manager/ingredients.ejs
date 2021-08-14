@@ -8,17 +8,17 @@
         <% if(ingredients.length > 0)  { %>
             <div class="ingredients">
                 <% ingredients.forEach(ing => { %>
-                    <div class="ing-container">
-                        <div class="image-container">
-                            <img class="ing-image" src="<%= ing.imagePath %>" alt="<%= ing.title %>">
+                    <div class="container container--ing">
+                        <div class="image-container image-container--ing">
+                            <img class="ing__image" src="<%= ing.imagePath %>" alt="<%= ing.title %>">
                         </div>
-                        <h3 class="ing-title"><%= ing.title %></h3>
-                        <p class="ing-price">$<%= ing.price %></p>
+                        <h3 class="container__title"><%= ing.title %></h3>
+                        <p class="container__price">$<%= ing.price %></p>
                         <div class="btns__container">
                             <a class="btn btn--ing" href="/manager/edit-ingredient/<%= ing._id %>">Edit</a>
                             <form action="/manager/delete-ingredient" method="POST">
                                 <input type="hidden" name="id" value="<%= ing._id %>" />
-                                <button class="btn btn--ing">Delete</button>
+                                <button type="submit" class="btn btn--ing">Delete</button>
                             </form>
                         </div>
                     </div>

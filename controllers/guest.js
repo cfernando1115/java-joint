@@ -1,6 +1,6 @@
 module.exports.getIndex = (req, res, next) => {
-    res.render('../views/guest/index', {
+    res.render('guest/index', {
         docTitle: 'Guest',
         role: 'guest'
     });
-}
+};

@@ -7,7 +7,7 @@
     <main>
         <div class="form-container">
             <h2><%= docTitle %></h2>
-            <form id="add-item-form" class="add-item-form" method="POST" 
+            <form id="add-ingredient-form" class="add-item-form" method="POST" 
                 action="/manager/<% if(editing) { %>edit-ingredient<% } else { %>add-ingredient<% } %>">
                 <label class="form__label" for="title">Title</label>
                 <input type="text" class="form__input" name="title" 

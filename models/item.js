@@ -1,25 +1,27 @@
 const getDb = require('../util/db').getDb;
 const mongodb = require('mongodb');
 
-class Ingredient {
-    constructor(title, price, imagePath, id) {
+class Item {
+    constructor(title, price, description, imagePath, recipe, id) {
         this.title = title;
         this.price = price;
+        this.description = description;
         this.imagePath = imagePath;
+        this.recipe = recipe;
         this._id = id
             ? new mongodb.ObjectId(id)
             : null;
-    };
+    }
 
     save() {
         const db = getDb();
         let dbTask;
         if (this._id) {
-            dbTask = db.collection('ingredients')
+            dbTask = db.collection('items')
                 .updateOne({ _id: this._id }, { $set: this });
         }
         else {
-            dbTask = db.collection('ingredients')
+            dbTask = db.collection('items')
                 .insertOne(this);
         }
         return dbTask;
@@ -27,32 +29,32 @@ class Ingredient {
 
     static async getAll() {
         const db = getDb();
-        return await db.collection('ingredients').find()
+        return await db.collection('items').find()
             .toArray();
     };
 
-    static async findById(ingId) {
+    static async findById(itemId) {
         const db = getDb();
 
-        return db.collection('ingredients')
-            .find({ _id: new mongodb.ObjectId(ingId) })
+        return db.collection('items')
+            .find({ _id: new mongodb.ObjectId(itemId) })
             .next();
     };
 
-    static deleteById(ingId) {
+    static deleteById(itemId) {
         const db = getDb();
-        return db.collection('ingredients')
+        return db.collection('items')
             .deleteOne(
-                { _id: new mongodb.ObjectId(ingId) }
+                { _id: new mongodb.ObjectId(itemId) }
             );
     };
 
-    static getDropdown() {
+    static findByTitle(title) {
         const db = getDb();
-        return db.collection('ingredients')
-            .find({}, { projection: { title: 1 } })
-            .toArray();
+        return db.collection('items')
+            .find({ title: title })
+            .next();
     }
 }
 
-module.exports = Ingredient;
+module.exports = Item;

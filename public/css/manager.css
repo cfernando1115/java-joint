@@ -35,7 +35,8 @@
 }
 
 .form__input,
-.form__textarea {
+.form__textarea,
+.form__select {
     width: 50%;
     height: 40px;
     border: none;
@@ -49,6 +50,10 @@
     height: auto;
 }
 
+.form__select {
+    width: 90%;
+}
+
 .form__label {
     text-align: left;
     width: 50%;
@@ -57,48 +62,86 @@
     font-weight: 400;
 }
 
-.btn--submit {
-    margin-top: 20px;
+.ingredients__container {
+    width: 50%;
 }
 
-/***** ingredients *****/
+.ingredient__select {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-.ingredients {
+.form__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form__group--select {
+    width: 80%;
+}
+
+.form__group--qty {
+    width: 15%;
+}
+
+.form__group--btn {
+    width: 20%;
+    margin-top: auto;
+}
+
+.form__input--qty {
+    width: 100%;
+}
+
+.btn__add-row {
+    outline: none;
+    border: none;
+    background-color: inherit;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.btn--submit {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+/***** ingredients/items *****/
+
+.ingredients,
+.items {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 30px;
 }
 
-.ing-container {
+.container {
+    padding: 10px 5px 0 5px;
     display: flex;
     flex-direction: column;
     background-color: var(--cream);
     border-radius: 5px;
     -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
             box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-    width: 10%;
     margin: 2%;
 }
 
 .image-container {
-    height: 150px;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
-.ing-image {
-    max-height: 150px;
-    max-width: 100%;
-    border-radius: 5px 5px 0 0;
-}
-
-.ing-title {
+.container__title,
+.recipe__item {
     text-align: center;
     margin-top: 10px;
 }
 
-.ing-price {
+.container__price {
     text-align: center;
     margin: 10px 0;
 }
@@ -109,9 +152,50 @@
     margin-bottom: 10px;
 }
 
+/***** ingredients *****/
+
+.container--ing {
+    width: 10%;
+}
+
+.image-container--ing {
+    height: 150px;
+}
+
+.ing__image {
+    max-height: 150px;
+    max-width: 100%;
+    border-radius: 5px 5px 0 0;
+}
+
 .btn--ing {
     text-decoration: none;
     font-size: 100%;
+}
+
+/***** items *****/
+
+.container--item {
+    width: 30%;
+}
+
+.image-container--item {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+}
+
+.item__image {
+    max-height: 250px;
+}
+
+.container__recipe-list {
+    height: 150px;
+    list-style: none;
+}
+
+.recipe-list__item {
+    text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -128,11 +212,32 @@
         width: 75%;
     }
 
-    .ingredients {
+    .ingredients__container {
+        width: 75%;
+    }
+
+    .container {
+        width: 80%;
+    }
+
+    .form__group--btn {
+        width: 30%;
+        margin-top: auto;
+    }
+
+    .ingredients,
+    .items {
         flex-direction: column;
     }
 
-    .ing-container {
-        width: 70%;
+    .container__recipe-list {
+        height: auto;
+        list-style: none;
+        margin-bottom: 10px;
+    }
+
+    .recipe-list__item {
+        font-size: 75%;
+        margin: 0;
     }
 }

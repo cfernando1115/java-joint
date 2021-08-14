@@ -1,5 +1,5 @@
 module.exports.getIndex = (req, res, next) => {
-    res.render('../views/home/index', {
+    res.render('home/index', {
         docTitle: 'JavaJoint',
         role: ''
     });
