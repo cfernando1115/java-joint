@@ -9,7 +9,16 @@
 body {
     font-family: 'Quicksand', sans-serif;
     height: 100vh;
+}
+
+.body {
     background-image: linear-gradient(rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0.5)), url('../img/home-background.jpg');
+    background-size: cover;
+    width: 100%;
+}
+
+.body--menus {
+    background-image: linear-gradient(rgba(15, 13, 13, 0.7),rgba(7, 7, 7, 0.7)), url('../img/menu-background2.jpg');
     background-size: cover;
     width: 100%;
 }
@@ -18,6 +27,8 @@ body {
     --brown: #a0522d;
     --cream: #fdfdfc;
     --mid: #dabbad;
+    --sky: #e7f0f3;
+    --lightOrange: rgb(240, 200, 125);
 }
 
 @media (max-width: 768px) {

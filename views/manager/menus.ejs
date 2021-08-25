@@ -1,0 +1,57 @@
+    <%- include('../shared/head.ejs') %>
+    <link rel="stylesheet" href="/css/manager.css">
+    <link rel="stylesheet" href="/css/nav.css">
+</head>
+<body class="body--menus">
+    <%- include('../shared/nav.ejs') %>
+    <main>
+        <div class="form-container">
+            <form class="get-menu__form">
+                <select class="form__select form__select--menu" name="menu[_id]">
+                    <option selected>
+                            **Select Menu**
+                    </option>
+                    <% menus.forEach(menu => { %>
+                        <option value="<%= menu._id %>"><%= menu.title %></option>
+                    <% }) %>
+                </select>
+                <button class="btn btn--menu" type="submit">Select</button>
+            </form>
+        </div>
+        <div class="menu-container">
+
+        </div>
+    </main>
+<%- include('../shared/end.ejs') %>
+
+<script>
+    (function(){
+        document.querySelector('.get-menu__form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            getMenu();
+        });
+
+        function getMenu(){
+            const menuSelect = document.querySelector('.form__select--menu');
+            const menuId = menuSelect.options[menuSelect.selectedIndex].value;
+            if(menuId === '**Select Menu**'){
+                console.log('oops');
+            }
+            else{
+                let request = new XMLHttpRequest();
+                request.open('GET', `http://localhost:3000/manager/menus/${menuId}`, true);
+                request.send();
+
+                request.onreadystatechange = () => {
+                    if(request.readyState === 4 && request.status === 200){
+                        const menu = JSON.parse(request.response);
+                        const menuContainer = document.querySelector('.menu-container');
+                    }
+                    if(request.status !== 200){
+                        console.log(request.status);
+                    }
+                };
+            }
+        };
+    })();
+</script>

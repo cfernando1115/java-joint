@@ -1,82 +1,153 @@
-<%- include('../shared/head.ejs') %>
-<link rel="stylesheet" href="/css/manager.css">
-<link rel="stylesheet" href="/css/nav.css">
+    <%- include('../shared/head.ejs') %>
+    <link rel="stylesheet" href="/css/manager.css">
+    <link rel="stylesheet" href="/css/nav.css">
 </head>
-<body>
-<%- include('../shared/nav.ejs') %>
-<main>
-    <div class="form-container">
-        <h2><%= docTitle %></h2>
-        <form id="add-item-form" class="add-item-form" method="POST" 
-            action="/manager/<% if(editing) { %>edit-item<% } else { %>add-item<% } %>">
-            <label class="form__label" for="title">Title</label>
-            <input type="text" class="form__input" name="title" 
-                <% if(editing) { %> value="<%= item.title %>" <% } %>/>
-            <label class="form__label" for="price">Price</label>
-            <input type="number" step="0.01" class="form__input" name="price" 
-                <% if(editing) { %> value="<%= item.price %>" <% } %>/>
-            <label class="form__label" for="description">Description</label>
-            <textarea class="form__textarea" rows="5" name="description"><% if(editing) { %><%= item.description %><% } %></textarea>
-            <label class="form__label" for="imagePath">Image Path</label>
-            <input type="text" class="form__input" name="imagePath" 
-                <% if(editing) { %> value="<%= item.imagePath %>" <% } %>/>
-            <div class="ingredients__container">
-                <% for( let i=0; i<ingRows; i++) { %>
-                    <div class="ingredient__select">
-                        <div class="form__group form__group--select">
-                            <label class="form__label" for="ingredients[<%= i %>][title]">Ingredients</label>
-                            <select class="form__select" name="ingredients[<%= i %>][title]">
-                                <option selected><% if(editing) { %><%= item.recipe[i].title %><% } else { %>**Select Ingredient**<% } %></option>
-                                <% ingredients.forEach(ing => { %>
-                                    <option><%= ing.title %></option>
-                                <% }) %>
-                            </select>
+<body class="body">
+    <%- include('../shared/nav.ejs') %>
+    <main>
+        <div class="form-container">
+            <h2><%= docTitle %></h2>
+            <form id="add-item-form" class="add-item__form" method="POST" 
+                action="/manager/<% if(editing) { %>edit-item<% } else { %>add-item<% } %>">
+                <label class="form__label" for="title">Title</label>
+                <input type="text" class="form__input" name="title" 
+                    <% if(editing) { %> value="<%= item.title %>" <% } %>/>
+                <label class="form__label" for="price">Price</label>
+                <input type="number" step="0.01" class="price form__input" name="price"
+                    <% if(editing) { %> value="<%= item.price %>" <% } else { %> value="0.00" <% } %>/>
+                <div class="food-cost__container">
+                    <div class="food-cost">
+                        <div class="form-group form-group__cost">
+                            <label class="form__label" for="foodCost">Food Cost</label>
+                            <input disabled type="number" step="0.01" class="cost form__cost disabled" name="foodCost" 
+                                <% if(editing) { %> value="<%= item.foodCost %>" } else { %> value="0.00" <% } %>/>
                         </div>
-                        <div class="form__group form__group--qty">
-                            <label class="form__label" for="ingredients[<%= i %>][qty]">Qty</label>
-                            <input type="number" class="form__input form__input--qty" 
-                                <% if(editing) { %> value="<%=item.recipe[i].qty %>" <% } %>
-                                name="ingredients[<%= i %>][qty]"/>
+                        <div class="form-group form-group__percent">
+                            <label class="form__label" for="foodCostPercentage">%</label>
+                            <input disabled type="number" class="percentage form__input form__input--percent disabled" name="foodCostPercentage"
+                                <% if(editing) { %> value="<%= item.foodCostPercentage %>" <% } else { %> value="0" <% } %>/>
                         </div>
                     </div>
+                </div>
+                <label class="form__label" for="description">Description</label>
+                <textarea type="textarea" class="form__textarea" rows="5" name="description"><% if(editing) { %><%= item.description %><% } %></textarea>
+                <label class="form__label" for="imagePath">Image Path</label>
+                <input type="text" class="form__input" name="imagePath" 
+                    <% if(editing) { %> value="<%= item.imagePath %>" <% } %>/>
+                <div class="ingredients__container">
+                    <% for( let i=0; i<ingRows; i++) { %>
+                        <div class="ingredient__select">
+                            <div class="form-group form-group__select">
+                                <label class="form__label" for="ingredients[<%= i %>][title]">Ingredient</label>
+                                <select class="ing-select form__select" name="ingredients[<%= i %>][_id]">
+                                    <option selected 
+                                        <% if(editing) { %> 
+                                            value="<%= item.recipe[i].ingredient._id %>" data-price="<%= item.recipe[i].ingredient.price %>"
+                                        <% } else { %>
+                                            data-price="0" 
+                                        <% } %>>
+                                        <% if(editing) { %>
+                                            <%= item.recipe[i].ingredient.title %>
+                                        <% } else { %>
+                                            **Select Ingredient**
+                                        <% } %>
+                                    </option>
+                                    <% ingredients.forEach(ing => { %>
+                                        <option value="<%= ing._id %>" data-price="<%= ing.price %>"><%= ing.title %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <div class="form-group form-group__qty">
+                                <label class="form__label" for="ingredients[<%= i %>][qty]">Qty</label>
+                                <input type="number" class="qty form__input form__input--qty" name="ingredients[<%= i %>][qty]"
+                                    <% if(editing) { %> 
+                                        value="<%=item.recipe[i].qty %>" 
+                                    <% } else { %> 
+                                        value="0" <% } %> />
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <button type="button" class="btn__add-row" onclick="addRows()">Add more...</button>
+                <% if(editing) { %>
+                    <input type="hidden" name="id" value="<%= item._id %>" />
                 <% } %>
-            </div>
-            <button type="button" class="btn__add-row" onclick="addRows()">Add more...</button>
-            <% if(editing) { %>
-                <input type="hidden" name="id" value="<%= item._id %>" />
-            <% } %>
-            <button class="btn btn--submit" type="submit"><% if(editing) { %>Update <% } else { %>Add <% } %> Menu Item</button>
-        </form>
-    </div>
-</main>
+                <button class="btn btn--submit" type="submit"><% if(editing) { %>Update <% } else { %>Add <% } %> Menu Item</button>
+            </form>
+        </div>
+    </main>
 
 <%- include('../shared/end.ejs') %>
 
 <script>
+    const ingContainer = document.querySelector('.ingredients__container');
     let curIndex = '<%= ingRows %>';
-    function addRows(){
-        const ingContainer = document.querySelector('.ingredients__container');
+    
+    (function(){
+        document.addEventListener('keydown', (e) => {
+            if((e.key == 'Enter') && (e.target.type !== 'textarea' && e.target.type !== 'submit')) {
+                e.preventDefault();
+                return false;
+            }
+        });
 
+        const priceEl = document.querySelector('.price');
+        const costEl = document.querySelector('.cost');
+        const costPercentageEl = document.querySelector('.percentage'); 
+
+        checkCost();
+
+        ingContainer.addEventListener('keyup', (e) => {
+            const ingSelectEls = document.querySelectorAll('.ing-select');
+            const qtyEls = document.querySelectorAll('.qty');
+            let totalCost = 0;
+            ingSelectEls.forEach((ingEl, i) => {
+                const selectedOption = ingEl.options[ingEl.selectedIndex];
+                const ingCost = selectedOption.dataset.price * +qtyEls[i].value;
+                totalCost += ingCost;
+            });
+            costEl.value = parseFloat(totalCost).toFixed(2);
+            if(+priceEl.value > 0) {
+                costPercentageEl.value = parseInt((costEl.value / priceEl.value) * 100);
+                checkCost();
+            }
+        });
+
+
+        priceEl.addEventListener('keyup', () => {
+            const newPercentage = parseInt((costEl.value / priceEl.value) * 100);
+            costPercentageEl.value = newPercentage;
+            checkCost();
+        });
+
+        function checkCost() {
+            costPercentageEl.value > 35
+                ? [costEl, costPercentageEl].forEach(el => el.classList.add('alert-input'))
+                : [costEl, costPercentageEl].forEach(el => el.classList.remove('alert-input'));
+        };
+    })();
+
+    function addRows() {
         const html = `
         <div class="ingredient__select">
-            <div class="form__group form__group--select">
-                <label class="form__label" for="ingredients[${curIndex}][title]">Ingredients</label>
-                <select class="form__select" name="ingredients[${curIndex}][title]">
-                    <option selected>**Select Ingredient**</option>
+            <div class="form-group form-group__select">
+                <label class="form__label" for="ingredients[${curIndex}][_id]">Ingredient</label>
+                <select class="ing-select form__select" name="ingredients[${curIndex}][_id]">
+                    <option selected data-price="0">**Select Ingredient**</option>
                     <% ingredients.forEach(ing => { %>
-                        <option><%= ing.title %></option>
+                        <option value="<%= ing._id %>" data-price="<%= ing.price %>"><%= ing.title %></option>
                     <% }) %>
                 </select>
             </div>
-            <div class="form__group form__group--qty">
+            <div class="form-group form-group__qty">
                 <label class="form__label" for="ingredients[${curIndex}][qty]">Qty</label>
-                <input type="number" class="form__input form__input--qty" name="ingredients[${curIndex}][qty]"/>
+                <input type="number" class="qty form__input form__input--qty" value="0" name="ingredients[${curIndex}][qty]"/>
             </div>
         </div>
         `;
         curIndex++;
 
         ingContainer.insertAdjacentHTML('beforeend', html);
-    }
+    };
 </script>
 

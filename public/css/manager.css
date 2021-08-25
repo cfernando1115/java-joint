@@ -17,6 +17,29 @@
     color: black;
     transition-duration: .5s;
 }
+
+.form__label {
+    text-align: left;
+    width: 50%;
+    margin-top: 10px;
+    margin-bottom: 3px;
+    font-weight: 400;
+}
+
+.disabled {
+    background-color: var(--sky);
+}
+
+.alert-text {
+    background-color: var(--lightOrange);
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 3px 0;
+}
+
+.alert-input {
+    background-color: var(--lightOrange);
+}
 /***** add/edit forms *****/
 
 .form-container {
@@ -27,7 +50,7 @@
     justify-content: center;
 }
 
-.add-item-form {
+.add-item__form {
     width: 50%;
     display: flex;
     align-items: center;
@@ -36,7 +59,8 @@
 
 .form__input,
 .form__textarea,
-.form__select {
+.form__select,
+.form__cost {
     width: 50%;
     height: 40px;
     border: none;
@@ -50,48 +74,52 @@
     height: auto;
 }
 
-.form__select {
+.form__select,
+.form__cost {
     width: 90%;
 }
 
-.form__label {
-    text-align: left;
-    width: 50%;
-    margin-top: 10px;
-    margin-bottom: 3px;
-    font-weight: 400;
-}
-
-.ingredients__container {
+.food-cost__container,
+.ingredients__container,
+.items__container {
     width: 50%;
 }
 
-.ingredient__select {
+.food-cost,
+.ingredient__select,
+.item__select {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.form__group {
+.form-group {
     display: flex;
     flex-direction: column;
 }
 
-.form__group--select {
+.form-group__cost,
+.form-group__select {
     width: 80%;
 }
 
-.form__group--qty {
+.form-group__percent,
+.form-group__qty {
     width: 15%;
 }
 
-.form__group--btn {
+.form-group__btn {
     width: 20%;
     margin-top: auto;
 }
 
+.form__input--percent,
 .form__input--qty {
+    width: 100%;
+}
+
+.select--item {
     width: 100%;
 }
 
@@ -148,7 +176,7 @@
 
 .btns__container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     margin-bottom: 10px;
 }
 
@@ -198,9 +226,42 @@
     text-align: center;
 }
 
+.btns__container--item {
+    justify-content: center;
+}
+
+.btn--item {
+    text-decoration: none;
+    font-size: 100%;
+    padding: 10px 30px;
+    margin: 0 15px;
+}
+
+/***** menus *****/
+.form__select--menu {
+    width: 80%;
+    margin-right: 20px;
+}
+
+.get-menu__form {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn--menu {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 @media (max-width: 768px) {
-    .add-item-form {
+    .add-item__form {
         width: 100%;
+    }
+
+    .get-menu__form {
+        width: 90%;
     }
 
     .form__input,
@@ -212,7 +273,9 @@
         width: 75%;
     }
 
-    .ingredients__container {
+    .food-cost__container,
+    .ingredients__container,
+    .items__container {
         width: 75%;
     }
 
@@ -220,7 +283,7 @@
         width: 80%;
     }
 
-    .form__group--btn {
+    .form-group__btn {
         width: 30%;
         margin-top: auto;
     }

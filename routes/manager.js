@@ -32,4 +32,12 @@ router.post('/edit-item', managerController.postAddEditItem);
 
 router.post('/delete-item', managerController.postDeleteItem);
 
+router.get('/add-menu', managerController.getAddMenu);
+
+router.post('/add-menu', managerController.postAddEditMenu);
+
+router.get('/menus', managerController.getMenus);
+
+router.get('/menus/:id', managerController.getMenu);
+
 module.exports = router;

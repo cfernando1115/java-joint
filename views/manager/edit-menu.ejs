@@ -1,0 +1,77 @@
+    <%- include('../shared/head.ejs') %>
+    <link rel="stylesheet" href="/css/manager.css">
+    <link rel="stylesheet" href="/css/nav.css">
+</head>
+<body class="body">
+    <%- include('../shared/nav.ejs') %>
+    <main>
+        <div class="form-container">
+            <h2><%= docTitle %></h2>
+            <form id="add-menu-form" class="add-item__form" method="POST" 
+                action="/manager/<% if(editing) { %>edit-menu<% } else { %>add-menu<% } %>">
+                <% if(editing) { %>
+                    <input type="hidden" name="created" value="<%= menu.created %>" />
+                <% } %>
+                <label class="form__label" for="title">Title</label>
+                <input type="text" class="form__input" name="title" 
+                    <% if(editing) { %> value="<%= menu.title %>" <% } %>/>
+                <div class="items__container">
+                    <% for( let i=0; i<itemRows; i++) { %>
+                        <div class="item__select">
+                            <div class="form-group form-group__select select--item">
+                                <label class="form__label" for="items[<%= i %>][_id]">Item</label>
+                                <select class="form__select select--item" name="items[<%= i %>][_id]">
+                                    <option selected 
+                                        <% if(editing) { %> 
+                                            value="<%= item[i]._id %>" 
+                                        <% } %>>
+                                        <% if(editing) { %>
+                                            <%= item[i].title %>
+                                        <% } else { %>
+                                            **Select Item**
+                                        <% } %>
+                                    </option>
+                                    <% items.forEach(item => { %>
+                                        <option value="<%= item._id %>"><%= item.title %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <button type="button" class="btn__add-row" onclick="addRows()">Add more...</button>
+                <% if(editing) { %>
+                    <input type="hidden" name="id" value="<%= menu._id %>" />
+                <% } %>
+                <button class="btn btn--submit" type="submit"><% if(editing) { %>Update <% } else { %>Add <% } %> Menu</button>
+            </form>
+        </div>
+    </main>
+</body>
+<%- include('../shared/end.ejs') %>
+
+
+<script>
+    let curIndex = '<%= itemRows %>';
+    function addRows(){
+        const itemContainer = document.querySelector('.items__container');
+
+        const html = `
+        <div class="item__select">
+            <div class="form-group form-group__select select--item">
+                <label class="form__label" for="items[${curIndex}][_id]">Item</label>
+                <select class="form__select select--item" name="items[${curIndex}][_id]">
+                    <option selected>**Select Item**</option>
+                    <% items.forEach(item => { %>
+                        <option value="<%= item._id %>"><%= item.title %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        `;
+        curIndex++;
+
+        itemContainer.insertAdjacentHTML('beforeend', html);
+    }
+</script>
+
