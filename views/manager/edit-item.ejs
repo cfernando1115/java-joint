@@ -65,10 +65,11 @@
                                     <% } else { %> 
                                         value="0" <% } %> />
                             </div>
+                            <button type="button" onclick="item.deleteItemIng(event)" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
                         </div>
                     <% } %>
                 </div>
-                <button type="button" class="btn__add-row" onclick="addRows()">Add more...</button>
+                <button type="button" class="btn__add-row" onclick="item.addRows()">Add more...</button>
                 <% if(editing) { %>
                     <input type="hidden" name="id" value="<%= item._id %>" />
                 <% } %>
@@ -80,10 +81,10 @@
 <%- include('../shared/end.ejs') %>
 
 <script>
-    const ingContainer = document.querySelector('.ingredients__container');
-    let curIndex = '<%= ingRows %>';
-    
-    (function(){
+    function editItem(){
+        const ingContainer = document.querySelector('.ingredients__container');
+        let curIndex = '<%= ingRows %>';
+        
         document.addEventListener('keydown', (e) => {
             if((e.key == 'Enter') && (e.target.type !== 'textarea' && e.target.type !== 'submit')) {
                 e.preventDefault();
@@ -115,9 +116,11 @@
 
 
         priceEl.addEventListener('keyup', () => {
-            const newPercentage = parseInt((costEl.value / priceEl.value) * 100);
-            costPercentageEl.value = newPercentage;
-            checkCost();
+            if(Number.isFinite(+priceEl.value) && +priceEl.value !== 0){
+                const newPercentage = parseInt((costEl.value / priceEl.value) * 100);
+                costPercentageEl.value = newPercentage;
+                checkCost();
+            }
         });
 
         function checkCost() {
@@ -125,29 +128,42 @@
                 ? [costEl, costPercentageEl].forEach(el => el.classList.add('alert-input'))
                 : [costEl, costPercentageEl].forEach(el => el.classList.remove('alert-input'));
         };
-    })();
 
-    function addRows() {
-        const html = `
-        <div class="ingredient__select">
-            <div class="form-group form-group__select">
-                <label class="form__label" for="ingredients[${curIndex}][_id]">Ingredient</label>
-                <select class="ing-select form__select" name="ingredients[${curIndex}][_id]">
-                    <option selected data-price="0">**Select Ingredient**</option>
-                    <% ingredients.forEach(ing => { %>
-                        <option value="<%= ing._id %>" data-price="<%= ing.price %>"><%= ing.title %></option>
-                    <% }) %>
-                </select>
+        function addRows() {
+            const html = `
+            <div class="ingredient__select">
+                <div class="form-group form-group__select">
+                    <label class="form__label" for="ingredients[${curIndex}][_id]">Ingredient</label>
+                    <select class="ing-select form__select" name="ingredients[${curIndex}][_id]">
+                        <option selected data-price="0">**Select Ingredient**</option>
+                        <% ingredients.forEach(ing => { %>
+                            <option value="<%= ing._id %>" data-price="<%= ing.price %>"><%= ing.title %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group form-group__qty">
+                    <label class="form__label" for="ingredients[${curIndex}][qty]">Qty</label>
+                    <input type="number" class="qty form__input form__input--qty" value="0" name="ingredients[${curIndex}][qty]"/>
+                </div>
+                <button type="button" onclick="item.deleteItemIng(event)" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
             </div>
-            <div class="form-group form-group__qty">
-                <label class="form__label" for="ingredients[${curIndex}][qty]">Qty</label>
-                <input type="number" class="qty form__input form__input--qty" value="0" name="ingredients[${curIndex}][qty]"/>
-            </div>
-        </div>
-        `;
-        curIndex++;
+            `;
+            curIndex++;
 
-        ingContainer.insertAdjacentHTML('beforeend', html);
+            ingContainer.insertAdjacentHTML('beforeend', html);
+        };
+
+        function deleteItemIng(event) {
+            const itemEl = event.target.parentNode.parentNode;
+            document.querySelector('.ingredients__container').removeChild(itemEl);
+        };
+
+        return {
+            addRows: addRows,
+            deleteItemIng: deleteItemIng
+        };
     };
+
+    const item = editItem();
 </script>
 

@@ -8,7 +8,7 @@
         <div class="form-container">
             <form class="get-menu__form">
                 <select class="form__select form__select--menu" name="menu[_id]">
-                    <option selected>
+                    <option disabled selected>
                             **Select Menu**
                     </option>
                     <% menus.forEach(menu => { %>
@@ -46,12 +46,135 @@
                     if(request.readyState === 4 && request.status === 200){
                         const menu = JSON.parse(request.response);
                         const menuContainer = document.querySelector('.menu-container');
+                        menuContainer.addEventListener('click', (e) => reorderItem(e, menu));
+                        renderMenu(menu);
                     }
                     if(request.status !== 200){
                         console.log(request.status);
                     }
                 };
             }
+        };
+
+        function reorderItem(e, menu) {
+            const reorderBtn = e.target.closest('a');
+            if(!reorderBtn) {
+                return;
+            }
+
+            if(reorderBtn.classList.contains('up')) {
+                const targetPosition = +reorderBtn.parentElement.parentElement.dataset.position;
+                if(targetPosition !== 1){
+                    const itemIndex = menu.items.findIndex(item => item.position == targetPosition);
+                    if(itemIndex !== -1) {
+                        menu.items[itemIndex].position = targetPosition - 1;
+                        menu.items[itemIndex - 1].position = targetPosition;
+                        renderMenu(menu);
+                    }
+                }
+            }
+            
+            if(reorderBtn.classList.contains('down')) {
+                const targetPosition = +reorderBtn.parentElement.parentElement.dataset.position;
+                if(targetPosition < menu.items.length) {
+                    const itemIndex = menu.items.findIndex(item => item.position == targetPosition);
+                    if(itemIndex !== -1) {
+                        menu.items[itemIndex].position = targetPosition + 1;
+                        menu.items[itemIndex + 1].position = targetPosition;
+                        renderMenu(menu);
+                    }
+                }
+            }
+
+            const saveOrderBtn = document.querySelector('.btn--menu-order');
+            saveOrderBtn.removeAttribute('disabled', '');
+            saveOrderBtn.classList.remove('disabled');
+        };
+
+        function renderMenu(menu){
+            const menuContainer = document.querySelector('.menu-container');
+            menuContainer.innerHTML = '';
+            const btnContainer = document.createElement('div');
+            const editBtn = document.createElement('a');
+            editBtn.textContent = 'Edit Menu';
+            editBtn.classList.add('btn', 'btn--menu-edit');
+            editBtn.setAttribute('href', `http://localhost:3000/manager/edit-menu/${menu._id}`);
+            const saveOrderBtn = document.createElement('button');
+            saveOrderBtn.textContent = 'Save Order';
+            saveOrderBtn.classList.add('btn', 'btn--menu-order', 'disabled');
+            saveOrderBtn.addEventListener('click', () => saveOrder(menu));
+            saveOrderBtn.setAttribute('disabled', '');
+            btnContainer.appendChild(editBtn);
+            btnContainer.appendChild(saveOrderBtn);
+            menuContainer.insertAdjacentElement('afterbegin', btnContainer);
+
+            menu.items.sort((a, b) => {
+                return a.position - b.position;
+            });
+
+            menu.items.forEach( item => {
+                            const itemEl = document.createElement('div');
+                            itemEl.dataset.position = item.position;
+                            itemEl.classList.add('menu__item');
+                            const imageEl = document.createElement('img');
+                            imageEl.setAttribute('src', item.imagePath);
+                            imageEl.classList.add('menu-item__img');
+                            const reorderEl = document.createElement('div');
+                            reorderEl.classList.add('reorder-btns');
+                            const upBtn = document.createElement('a');
+                            upBtn.classList.add('up');
+                            upBtn.innerHTML = '<i class="fas fa-sort-up sort-btn"></i>';
+                            const downBtn = document.createElement('a');
+                            downBtn.classList.add('down');
+                            downBtn.innerHTML = '<i class="fas fa-sort-down sort-btn"></i>';
+                            const contentEl = document.createElement('div');
+                            contentEl.classList.add('menu-item__content');
+                            const titleEl = document.createElement('h3');
+                            const descEl = document.createElement('p');
+                            descEl.classList.add('menu-item__desc');
+                            descEl.textContent = `${item.description} - ${item.price}`;
+                            titleEl.textContent = item.title;
+                            contentEl.appendChild(titleEl);
+                            contentEl.appendChild(descEl);
+                            reorderEl.appendChild(upBtn);
+                            reorderEl.appendChild(downBtn);
+                            itemEl.appendChild(imageEl);
+                            itemEl.appendChild(contentEl);
+                            itemEl.appendChild(reorderEl);
+                            menuContainer.insertAdjacentElement('beforeend', itemEl);
+                        });
+        };
+
+        function saveOrder(menu) {
+            const menuSelect = document.querySelector('.form__select--menu');
+            const menuId = menuSelect.options[menuSelect.selectedIndex].value;
+            
+            const updatedMenu = JSON.parse(JSON.stringify(menu));
+            updatedMenu.items = menu.items.map(item => {
+                const menuItem = {};
+                menuItem._id = item._id;
+                menuItem.position = item.position;
+                return menuItem;
+            });
+
+            let request = new XMLHttpRequest();
+                request.open('POST', `http://localhost:3000/manager/menus/save-order/${menuId}`, true);
+                request.setRequestHeader('Content-type', 'application/json');
+                request.send(JSON.stringify(updatedMenu));
+
+                request.onreadystatechange = () => {
+                    if(request.readyState === 4 && request.status === 200){
+                        const response = JSON.parse(request.response);
+                        console.log(response.message);
+                        
+                        const saveOrderBtn = document.querySelector('.btn--menu-order');
+                        saveOrderBtn.setAttribute('disabled', '');
+                        saveOrderBtn.classList.add('disabled');
+                    }
+                    if(request.status !== 200){
+                        console.log(request.status);
+                    }
+                };
         };
     })();
 </script>

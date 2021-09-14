@@ -23,10 +23,10 @@
                                 <select class="form__select select--item" name="items[<%= i %>][_id]">
                                     <option selected 
                                         <% if(editing) { %> 
-                                            value="<%= item[i]._id %>" 
+                                            value="<%= menu.items[i]._id %>" 
                                         <% } %>>
                                         <% if(editing) { %>
-                                            <%= item[i].title %>
+                                            <%= menu.items[i].title %>
                                         <% } else { %>
                                             **Select Item**
                                         <% } %>
@@ -36,10 +36,11 @@
                                     <% }) %>
                                 </select>
                             </div>
+                            <button type="button" onclick="menu.deleteMenuItem(event)" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
                         </div>
                     <% } %>
                 </div>
-                <button type="button" class="btn__add-row" onclick="addRows()">Add more...</button>
+                <button type="button" class="btn__add-row" onclick="menu.addRows()">Add more...</button>
                 <% if(editing) { %>
                     <input type="hidden" name="id" value="<%= menu._id %>" />
                 <% } %>
@@ -52,8 +53,9 @@
 
 
 <script>
-    let curIndex = '<%= itemRows %>';
-    function addRows(){
+    function editMenu(){
+        let curIndex = '<%= itemRows %>';
+        function addRows(){
         const itemContainer = document.querySelector('.items__container');
 
         const html = `
@@ -67,11 +69,25 @@
                     <% }) %>
                 </select>
             </div>
+            <button type="button" onclick="deleteMenuItem(event)" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
         </div>
         `;
         curIndex++;
 
         itemContainer.insertAdjacentHTML('beforeend', html);
-    }
+        };
+
+        function deleteMenuItem(event) {
+            const itemEl = event.target.parentNode.parentNode;
+            document.querySelector('.items__container').removeChild(itemEl);
+        };
+
+        return {
+            addRows: addRows,
+            deleteMenuItem: deleteMenuItem
+        };
+    };
+
+    const menu = editMenu();
 </script>
 

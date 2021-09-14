@@ -169,6 +169,16 @@ module.exports.getMenus = async (req, res, next) => {
 module.exports.getMenu = async (req, res, next) => {
     const menuId = req.params.id;
     const menu = await Menu.findById('menus', menuId);
+
+    if (menu.items) {
+        //prices change frequently...store refs for now
+        menu.items = await Promise.all(menu.items
+            .map(async (item, index) => {
+                item = await Item.findById('items', item._id, { projection: { price: 1, title: 1, description: 1, imagePath: 1 } });
+                item.position = menu.items[index].position;
+                return item;
+            }));
+    }
     
     res.send(JSON.stringify(menu));
 };
@@ -184,23 +194,62 @@ module.exports.getAddMenu = async (req, res, next) => {
     });
 };
 
+module.exports.getEditMenu = async (req, res, next) => {
+    const menuId = req.params.id;
+    const menu = await Menu.findById('menus', menuId);
+        
+    if (!menu) {
+        return res.redirect('/manager');
+    }
+
+    menu.items = await Promise.all(menu.items
+        .map(async (item, index) => {
+            const { title } = await Item.getTitleById('items', item._id);
+            item.title = title;
+            return item;
+        }));
+
+    const items = await Menu.getDropdown('items', { projection: { title: 1, price: 1 } });
+
+    res.render('manager/edit-menu', {
+        docTitle: 'Edit Menu',
+        role: 'manager',
+        editing: true,
+        items: items,
+        menu: menu,
+        itemRows: menu.items.length
+    });
+};
+
 module.exports.postAddEditMenu = async (req, res, next) => {
     const { title, created, items, id } = req.body;
 
     let menuItems = [];
 
     if (items) {
-        //prices change frequently...store refs for now
-        menuItems = await Promise.all(items
+        menuItems = items
             .filter(item => item._id !== '**Select Item**')
-            .map(async (item) => {
-                return await Item.getTitleById('items', item._id);
-            }));
+            .map((item, index) => {
+                item.position = index + 1;
+                return item;
+            });
     }
 
     const newMenu = new Menu(title, created, menuItems, id);
 
     await newMenu.save('menus');
  
-    res.redirect('/manager');
+    res.redirect('/manager/menus');
+};
+
+module.exports.saveMenuOrder = async (req, res, next) => {
+    const menuId = req.params.id;
+
+    const { title, created, items } = req.body;
+
+    const newMenu = new Menu(title, created, items, menuId);
+
+    await newMenu.save('menus');
+
+    res.send({ message: 'Order saved' });
 };

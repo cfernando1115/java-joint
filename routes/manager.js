@@ -36,8 +36,14 @@ router.get('/add-menu', managerController.getAddMenu);
 
 router.post('/add-menu', managerController.postAddEditMenu);
 
+router.get('/edit-menu/:id', managerController.getEditMenu);
+
+router.post('/edit-menu', managerController.postAddEditMenu);
+
 router.get('/menus', managerController.getMenus);
 
 router.get('/menus/:id', managerController.getMenu);
+
+router.post('/menus/save-order/:id', managerController.saveMenuOrder);
 
 module.exports = router;

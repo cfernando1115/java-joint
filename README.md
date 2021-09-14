@@ -12,7 +12,7 @@
 
 - [x] Ingredient CRUD - Manager
 - [x] Item CRUD - Manager
-- [ ] Menu CRUD - Manager
+- [x] Menu CRUD - Manager
 - [x] Item Feature: Food cost alerts - Manager
 - [x] Item Feature: Dynamic food cost calculator - Manager
 - [ ] Order CRUD - Guest

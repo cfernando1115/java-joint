@@ -26,7 +26,7 @@ class Collection {
         const db = getDb();
 
         return db.collection(collection)
-            .find({ _id: new mongodb.ObjectId(id) }, {projection: { title: 1 }})
+            .find({ _id: new mongodb.ObjectId(id) }, {projection: { title: 1, _id: 0 }})
             .next();
     };
 
