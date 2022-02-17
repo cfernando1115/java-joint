@@ -8,6 +8,9 @@
 ### Note: a [MongoDb](https://www.mongodb.com/) connection string is needed to run this app locally
 *Create a file named mongoConnection.js in util/ and store your string in export connectionString*
 ***
+### Note: an express-session secret is needed to run this app
+*Create a file named expressSessionSecret.js in util/ and store your string in export sessionSecret*
+***
 ### Version 1.0 Features
 
 - [x] Ingredient CRUD - Manager
@@ -16,9 +19,10 @@
 - [x] Item Feature: Food cost alerts - Manager
 - [x] Item Feature: Dynamic food cost calculator - Manager
 - [ ] Order CRUD - Guest
-- [ ] Login functionality
-- [ ] Authentication (sessions)
-- [ ] CSRF
+- [x] Login functionality - Guest
+- [ ] Login functionality - Manager
+- [x] Authentication (sessions)
+- [x] CSRF
 - [ ] Role-based authorization
 - [ ] Error-handling
 - [ ] Optimization

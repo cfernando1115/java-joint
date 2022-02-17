@@ -1,0 +1,25 @@
+<%- include('../shared/head.ejs') %>
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/manager.css">
+</head>
+<body class="body">
+<%- include('../shared/nav.ejs') %>
+<main>
+    <% if(errorMessage) { %>
+        <div class="flash-message flash-message--error"><%= errorMessage %></div>
+    <% } %>
+    <div class="form-container">
+        <h2><%= docTitle %></h2>
+        <form id="login-form" class="add-item__form" method="POST" 
+            action="/login">
+            <label class="form__label" for="email">email</label>
+            <input type="email" class="form__input" name="email" /><br />
+            <label class="form__label" for="price">password</label>
+            <input type="text" class="form__input" name="password" />
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn--submit" type="submit">Login</button>
+        </form>
+    </div>
+</main>
+
+<%- include('../shared/end.ejs') %>

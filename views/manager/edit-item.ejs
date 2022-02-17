@@ -73,6 +73,7 @@
                 <% if(editing) { %>
                     <input type="hidden" name="id" value="<%= item._id %>" />
                 <% } %>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button class="btn btn--submit" type="submit"><% if(editing) { %>Update <% } else { %>Add <% } %> Menu Item</button>
             </form>
         </div>

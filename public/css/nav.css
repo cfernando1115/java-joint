@@ -19,6 +19,14 @@
     margin: 0 30px;
 }
 
+.link-list__item--btn {
+    border: none;
+    font-size: 20px;
+    background-color: transparent;
+    color: var(--brown);
+    cursor: pointer;
+}
+
 .link-list__item--nested {
     margin: 10px 5px 10px 10px;
 }

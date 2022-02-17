@@ -50,6 +50,7 @@ class Collection {
 
     static deleteById(collection, id) {
         const db = getDb();
+
         return db.collection(collection)
             .deleteOne(
                 { _id: new mongodb.ObjectId(id) }
@@ -58,6 +59,7 @@ class Collection {
 
     static getDropdown(collection, projection = { projection: { title: 1 } }) {
         const db = getDb();
+        
         return db.collection(collection)
             .find({}, projection)
             .toArray();

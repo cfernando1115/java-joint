@@ -15,6 +15,7 @@
                         <option value="<%= menu._id %>"><%= menu.title %></option>
                     <% }) %>
                 </select>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button class="btn btn--menu" type="submit">Select</button>
             </form>
         </div>

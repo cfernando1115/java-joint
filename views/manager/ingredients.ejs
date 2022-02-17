@@ -18,6 +18,7 @@
                             <a class="btn btn--ing" href="/manager/edit-ingredient/<%= ing._id %>">Edit</a>
                             <form action="/manager/delete-ingredient" method="POST">
                                 <input type="hidden" name="id" value="<%= ing._id %>" />
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button type="submit" class="btn btn--ing">Delete</button>
                             </form>
                         </div>

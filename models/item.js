@@ -20,10 +20,12 @@ class Item extends Collection{
 
     static async updateItems(ingId, newPrice) {
         const db = getDb();
+
         const items = await db.collection('items')
             .find({ 'recipe.ingredient._id': new mongodb.ObjectId(ingId) }).toArray();
         
         const updatedItems = items.slice();
+        
         updatedItems.map(item => {
             item.recipe.forEach(rec => {
                 if (rec.ingredient._id.toString() === new mongodb.ObjectId(ingId).toString()) {

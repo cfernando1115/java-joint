@@ -31,6 +31,23 @@ body {
     --lightOrange: rgb(240, 200, 125);
 }
 
+.flash-message {
+    margin: auto;
+    width: 100%;
+    background-color: var(--brown);
+    padding: 1rem;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.flash-message--error {
+    background-color: var(--lightOrange);
+    color: var(--brown);
+    font-weight: 500;
+    font-size: 1.2rem;
+    border-bottom: 2px solid var(--brown);
+}
+
 @media (max-width: 768px) {
 
 }
