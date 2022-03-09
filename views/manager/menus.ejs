@@ -15,7 +15,7 @@
                         <option value="<%= menu._id %>"><%= menu.title %></option>
                     <% }) %>
                 </select>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                 <button class="btn btn--menu" type="submit">Select</button>
             </form>
         </div>
@@ -46,6 +46,7 @@
                 request.onreadystatechange = () => {
                     if(request.readyState === 4 && request.status === 200){
                         const menu = JSON.parse(request.response);
+                        menu._csrf = document.querySelector('[name="_csrf"]').value;
                         const menuContainer = document.querySelector('.menu-container');
                         menuContainer.addEventListener('click', (e) => reorderItem(e, menu));
                         renderMenu(menu);

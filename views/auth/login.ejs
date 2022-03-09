@@ -1,6 +1,7 @@
 <%- include('../shared/head.ejs') %>
 <link rel="stylesheet" href="/css/nav.css">
 <link rel="stylesheet" href="/css/manager.css">
+<link rel="stylesheet" href="/css/auth.css">
 </head>
 <body class="body">
 <%- include('../shared/nav.ejs') %>
@@ -16,9 +17,10 @@
             <input type="email" class="form__input" name="email" /><br />
             <label class="form__label" for="price">password</label>
             <input type="text" class="form__input" name="password" />
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <button class="btn btn--submit" type="submit">Login</button>
         </form>
+        <a class="password-reset__link" href="/password-reset">Reset Password</a>
     </div>
 </main>
 

@@ -1,0 +1,8 @@
+.password-reset__link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.password-reset__link:hover {
+    color: var(--brown);
+}

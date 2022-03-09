@@ -21,7 +21,7 @@
                 <% if(editing) { %>
                     <input type="hidden" name="id" value="<%= ingredient._id %>" />
                 <% } %>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                 <button class="btn btn--submit" type="submit"><% if(editing) { %>Update <% } else { %>Add <% } %> Ingredient</button>
             </form>
         </div>

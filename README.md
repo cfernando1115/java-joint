@@ -11,6 +11,9 @@
 ### Note: an express-session secret is needed to run this app
 *Create a file named expressSessionSecret.js in util/ and store your string in export sessionSecret*
 ***
+### Note: a [SendGrid](https://www.sendgrid.com/) verified sender identity and api key is needed for email functionality
+*Create a file named sendgrid.js in util/ and store your key in export apiKey, sender identity in export senderEmail*
+***
 ### Version 1.0 Features
 
 - [x] Ingredient CRUD - Manager
