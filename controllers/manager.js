@@ -6,7 +6,8 @@ const ingRows = require('../util/viewHelpers').ingredientRows;
 module.exports.getIndex = (req, res, next) => {
     res.render('manager/index', {
         docTitle: 'Manager',
-        role: 'manager'
+        role: 'manager',
+        path: ''
     });
 };
 
@@ -16,7 +17,8 @@ module.exports.getIngredients = async (req, res, next) => {
     res.render('manager/ingredients', {
         docTitle: 'Ingredients',
         role: 'manager',
-        ingredients: ingredients
+        ingredients: ingredients,
+        path: '/manager/ingredients'
     });
 };
 
@@ -30,7 +32,8 @@ module.exports.getAddIngredient = (req, res, next) => {
     res.render('manager/edit-ingredient', {
         docTitle: 'Add Ingredient',
         role: 'manager',
-        editing: false
+        editing: false,
+        path: '/manager/add-ingredient'
     });
 };
 
@@ -58,7 +61,7 @@ module.exports.postAddEditIngredient = async (req, res, next) => {
     const ing = await Ingredient.findById('ingredients', id);
 
     //update all items with the ingredient if price changes
-    if (ing.price !== +price) {
+    if (ing && ing.price !== +price) {
         await Item.updateItems(ing._id, price);
     }
     
@@ -83,7 +86,8 @@ module.exports.getItems = async (req, res, next) => {
     res.render('manager/items', {
         docTitle: 'Items',
         role: 'manager',
-        items: items
+        items: items,
+        path: '/manager/items'
     });
 }
 
@@ -94,7 +98,8 @@ module.exports.getAddItem = async (req, res, next) => {
         role: 'manager',
         editing: false,
         ingredients: ingredients,
-        ingRows: ingRows
+        ingRows: ingRows,
+        path: '/manager/add-item'
     });
 };
 
@@ -115,7 +120,8 @@ module.exports.getEditItem = async (req, res, next) => {
         editing: true,
         ingredients: ingredients,
         item: item,
-        ingRows: item.recipe.length
+        ingRows: item.recipe.length,
+        path: '/manager/edit-item'
     });
 }
 
@@ -162,7 +168,8 @@ module.exports.getMenus = async (req, res, next) => {
         docTitle: 'Menus',
         role: 'manager',
         menus: menus,
-        menuLoaded: false
+        menuLoaded: false,
+        path: '/manager/menus'
     });
 };
 
@@ -190,7 +197,8 @@ module.exports.getAddMenu = async (req, res, next) => {
         role: 'manager',
         items: items,
         itemRows: 6,
-        editing: false
+        editing: false,
+        path: '/manager/add-menu'
     });
 };
 
@@ -214,6 +222,7 @@ module.exports.getEditMenu = async (req, res, next) => {
     res.render('manager/edit-menu', {
         docTitle: 'Edit Menu',
         role: 'manager',
+        path: '/manager/edit-menu',
         editing: true,
         items: items,
         menu: menu,

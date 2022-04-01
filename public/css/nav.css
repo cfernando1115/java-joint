@@ -5,8 +5,13 @@
     background-color: var(--cream);
 }
 
+.logo__container {
+    display: flex;
+    align-items: center;
+}
+
 .nav__heading {
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .nav__link-list {
@@ -35,6 +40,10 @@
     font-size: 125%;
     text-decoration: none;
     color: inherit;
+}
+
+.nav__link--active {
+    color: orange;
 }
 
 .nav__link--nested {
@@ -76,6 +85,10 @@
         padding-top: 10px;
     }
 
+    .nav__heading {
+        margin-left: 5px;
+    }
+
     .nav__link-list {
         display: flex;
         list-style: none;
@@ -95,6 +108,10 @@
         font-size: 100%;
         text-decoration: none;
         color: inherit;
+    }
+
+    .nav__link--active {
+        color: orange;
     }
     
     .nav__link--nested {

@@ -2,9 +2,10 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const crypto = require('crypto');
+const { validationResult } = require('express-validator');
 
-const User = require("../models/user");
-const sendgrid = require("../util/sendgrid");
+const User = require('../models/user');
+const sendgrid = require('../util/sendgrid');
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
@@ -18,6 +19,8 @@ module.exports.getLogin = (req, res, next) => {
         docTitle: 'Login',
         role: 'guest',
         authenticated: false,
+        curInput: { email: '', password: '' },
+        validationErrors: [],
         errorMessage: req.flash('error')[0]
     });
 };
@@ -25,21 +28,22 @@ module.exports.getLogin = (req, res, next) => {
 module.exports.postLogin = async (req, res, next) => {
     const { email, password } = req.body;
 
-    try {
-        const user = await User.findByEmail(email);
-        
-        if (!user) {
-            req.flash('error', 'invalid login');
-            return res.redirect('/login');
-        }
+    const errors = validationResult(req);
 
-        const result = await bcrypt.compare(password, user.password);
-        if (!result) {
-            return res.redirect('/login');
-        }
-    
+    if (!errors.isEmpty()) {
+        return res.status(422).render('auth/login', {
+            path: '/login',
+            docTitle: 'Login',
+            role: 'guest',
+            curInput: { email, password },
+            validationErrors: errors.array(),
+            errorMessage: errors.array()[0].msg
+        });
+    }
+
+    try {
         req.session.isLoggedIn = true;
-        req.session.userId = user._id;
+        req.session.userId = req.loggingInUser._id;
     
         req.session.save(err => {
             if (err) {
@@ -68,6 +72,8 @@ module.exports.getSignup = (req, res, next) => {
         docTitle: 'Sign Up',
         role: 'guest',
         authenticated: false,
+        curInput: { email: '', password: '', confirmPassword: '' },
+        validationErrors: [],
         errorMessage: req.flash('error')[0]
     });
 };
@@ -75,14 +81,20 @@ module.exports.getSignup = (req, res, next) => {
 module.exports.postSignup = async (req, res, next) => {
     const { email, password, confirmPassword } = req.body;
 
-    try {
-        const existingUser = await User.findByEmail(email);
-    
-        if (existingUser) {
-            req.flash('error', 'email is taken');
-            return res.redirect('/signup');
-        }
-        
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).render('auth/signup', {
+            path: '/signup',
+            docTitle: 'Sign Up',
+            role: 'guest',
+            curInput: { email, password, confirmPassword },
+            validationErrors: errors.array(),
+            errorMessage: errors.array()[0].msg
+        });
+    }
+
+    try {        
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const user = new User(email, hashedPassword, bill = { items: [] });

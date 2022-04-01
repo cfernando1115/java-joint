@@ -1,29 +1,29 @@
 <nav class="nav">
-    <div>
+    <div class="logo__container">
         <a href="/"><img src="/img/logo-sm.png" /></a>
         <h2 class="nav__heading">JavaJoint</h2>
     </div>
     <ul class="nav__link-list">
         <% if(role==="manager") { %>
             <li class="link-list__item nav-dropdown">
-                <a class="nav__link">Ingredients</a>
+                <a class="nav__link <%= path.includes('ingredient') ? 'nav__link--active' : '' %>">Ingredients</a>
                 <ul class="nav-dropdown__content">
-                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested" href="/manager/ingredients" >Ingredients</a></li>
-                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested" href="/manager/add-ingredient" >Add Ingredient</a></li>
+                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested <%= path === '/manager/ingredients' ? 'nav__link--active' : '' %>" href="/manager/ingredients" >Ingredients</a></li>
+                    <li class="link-list__item link-list__item--nested"><a class="nav__link nav__link--nested <%= path === '/manager/add-ingredient' ? 'nav__link--active' : '' %>" href="/manager/add-ingredient" >Add Ingredient</a></li>
                 </ul>
             </li>
             <li class="link-list__item nav-dropdown">
-                <a class="nav__link">Items</a>
+                <a class="nav__link <%= path.includes('item') ? 'nav__link--active' : '' %>"">Items</a>
                 <ul class="nav-dropdown__content">
-                    <li class="link-list__item link-list__item--nested"><a href="/manager/items" class="nav__link nav__link--nested">Items</a></li>
-                    <li class="link-list__item link-list__item--nested"><a href="/manager/add-item" class="nav__link nav__link--nested">Add Menu Item</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="/manager/items" class="nav__link nav__link--nested <%= path === '/manager/items' ? 'nav__link--active' : '' %>">Items</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="/manager/add-item" class="nav__link nav__link--nested <%= path === '/manager/add-item' ? 'nav__link--active' : '' %>">Add Menu Item</a></li>
                 </ul>
             </li>
             <li class="link-list__item nav-dropdown">
-                <a class="nav__link">Menus</a>
+                <a class="nav__link <%= path.includes('menu') ? 'nav__link--active' : '' %>"">Menus</a>
                 <ul class="nav-dropdown__content">
-                    <li class="link-list__item link-list__item--nested"><a href="/manager/menus" class="nav__link nav__link--nested">Menus</a></li>
-                    <li class="link-list__item link-list__item--nested"><a href="/manager/add-menu" class="nav__link nav__link--nested">Add Menu</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="/manager/menus" class="nav__link nav__link--nested <%= path === '/manager/menus' ? 'nav__link--active' : '' %>">Menus</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="/manager/add-menu" class="nav__link nav__link--nested <%= path === '/manager/add-menu' ? 'nav__link--active' : '' %>">Add Menu</a></li>
                 </ul>
             </li>
         <% } %>
@@ -38,8 +38,8 @@
                     </form>
                 </li>
             <% } else { %>
-                <li class="link-list__item"><a class="nav__link" href="/login">Login</a></li>
-                <li class="link-list__item"><a class="nav__link" href="/signup">Sign Up</a></li>
+                <li class="link-list__item"><a class="nav__link <%= path === '/login' ? 'nav__link--active' : '' %>" href="/login">Login</a></li>
+                <li class="link-list__item"><a class="nav__link <%= path === '/signup' ? 'nav__link--active' : '' %>" href="/signup">Sign Up</a></li>
             <% } %>
         <% } %>
     </ul>
