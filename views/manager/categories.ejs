@@ -1,0 +1,49 @@
+<%- include('../shared/head.ejs') %>
+<link rel="stylesheet" href="/css/manager.css">
+<link rel="stylesheet" href="/css/nav.css">
+</head>
+<body class="body">
+<%- include('../shared/nav.ejs') %>
+<main>
+    <div style="margin-bottom: 5%;">
+        <% if(categories.length > 0)  { %>
+            <p class="category-type__title">Main Categories</p>
+            <div class="categories">
+                <% categories.filter(cat => cat.main === 'true').forEach(cat => { %>
+                    <div class="container container--cat">
+                        <h3 class="container__title container__title--cat"><%= cat.title %></h3>
+                        <p>Category: <%= cat.main === 'true' ? "Main" : "Sub" %></p>
+                        <div class="btns__container btns__container--cat">
+                            <a class="btn btn--cat" href="/manager/edit-category/<%= cat._id %>">Edit</a>
+                            <form action="/manager/delete-category" method="POST">
+                                <input type="hidden" name="id" value="<%= cat._id %>" />
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                                <button type="submit" class="btn btn--cat">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+            <p class="category-type__title">SubCategories</p>
+            <div class="categories">
+                <% categories.filter(cat => cat.main === 'false').forEach(cat => { %>
+                    <div class="container container--cat">
+                        <h3 class="container__title container__title--cat"><%= cat.title %></h3>
+                        <p>Category: <%= cat.main === 'true' ? "Main" : "Sub" %></p>
+                        <div class="btns__container btns__container--cat">
+                            <a class="btn btn--cat" href="/manager/edit-category/<%= cat._id %>">Edit</a>
+                            <form action="/manager/delete-category" method="POST">
+                                <input type="hidden" name="id" value="<%= cat._id %>" />
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                                <button type="submit" class="btn btn--cat">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <h1>No categories yet!</h1>
+        <% } %>
+    </div>
+</main>
+<%- include('../shared/end.ejs') %>

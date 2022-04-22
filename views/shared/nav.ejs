@@ -26,6 +26,13 @@
                     <li class="link-list__item link-list__item--nested"><a href="/manager/add-menu" class="nav__link nav__link--nested <%= path === '/manager/add-menu' ? 'nav__link--active' : '' %>">Add Menu</a></li>
                 </ul>
             </li>
+            <li class="link-list__item nav-dropdown">
+                <a class="nav__link <%= path.includes('categor') ? 'nav__link--active' : '' %>"">Categories</a>
+                <ul class="nav-dropdown__content">
+                    <li class="link-list__item link-list__item--nested"><a href="/manager/categories" class="nav__link nav__link--nested <%= path === '/manager/categories' ? 'nav__link--active' : '' %>">Categories</a></li>
+                    <li class="link-list__item link-list__item--nested"><a href="/manager/add-category" class="nav__link nav__link--nested <%= path === '/manager/add-category' ? 'nav__link--active' : '' %>">Add Category</a></li>
+                </ul>
+            </li>
         <% } %>
         <% if(role==="guest") { %>
             <% if(authenticated) { %>

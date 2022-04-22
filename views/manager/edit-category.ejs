@@ -1,0 +1,46 @@
+<%- include('../shared/head.ejs') %>
+<link rel="stylesheet" href="/css/manager.css">
+<link rel="stylesheet" href="/css/nav.css">
+</head>
+<body class="body">
+<%- include('../shared/nav.ejs') %>
+<main>
+    <% if(errorMessage) { %>
+        <div class="flash-message flash-message--error"><%= errorMessage %></div>
+    <% } %>
+    <div class="form-container">
+        <h2><%= docTitle %></h2>
+        <form id="add-category-form" class="add-item__form" method="POST" 
+            action="/manager/<% if(editing) { %>edit-category<% } else { %>add-category<% } %>">
+            <label class="form__label" for="title">Title</label>
+            <input type="text" class="form__input" name="title" 
+                <% if(editing || valError) { %> value="<%= category.title %>" <% } %> />
+            <div class="checkbox__container">
+                <label class="form__label label--checkbox">
+                    <input type="radio" name="main" class="category--main" value="true"
+                        <% if((editing || valError) && category.main === 'true') { __append('checked') } %> /> Main Category</label>
+                <label class="form__label label--checkbox">
+                    <input type="radio" name="main" class="category--sub" value="false"
+                        <% if((editing || valError) && category.main === 'false') { __append('checked') } %> /> SubCategory</label>
+            </div>
+            <% if(editing) { %>
+                <input type="hidden" name="id" value="<%= category._id %>" />
+            <% } %>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            <button class="btn btn--submit" type="submit"><% if(editing) { %>Update <% } else { %>Add <% } %> Category</button>
+        </form>
+    </div>
+</main>
+
+<%- include('../shared/end.ejs') %>
+
+<script>
+(function() {
+    document.addEventListener('keydown', (e) => {
+        if(e.key == 'Enter' && e.target.type !== 'submit') {
+            e.preventDefault();
+            return false;
+        }
+    });
+})();
+</script>

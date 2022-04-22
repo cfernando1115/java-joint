@@ -4,9 +4,11 @@ const mongodb = require('mongodb');
 const Collection = require('./collection');
 
 class Item extends Collection{
-    constructor(title, price, description, imagePath, recipe, foodCost, foodCostPercentage, id) {
+    constructor(title, category, subcategory, price, description, imagePath, recipe, foodCost, foodCostPercentage, id) {
         super();
         this.title = title;
+        this.category = category;
+        this.subcategory = subcategory;
         this.price = price;
         this.description = description;
         this.imagePath = imagePath;

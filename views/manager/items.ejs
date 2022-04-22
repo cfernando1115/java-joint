@@ -16,6 +16,10 @@
                             <img class="item__image" src="<%= item.imagePath %>" alt="<%= item.title %>">
                         </div>
                         <h3 class="container__title"><%= item.title %></h3>
+                        <div class="container__category">
+                            <p><%= item.category.title %> - </p> 
+                            <p><%= item.subcategory.title %></p>
+                        </div>
                         <p class="container__price">$<%= item.price %></p>
                         <ul class="container__recipe-list">
                             <% item.recipe?.forEach(rec => { %>

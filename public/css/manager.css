@@ -150,7 +150,7 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    height: 90%;
+    height: 100%;
     overflow: auto;
     padding-bottom: 20px;
 }
@@ -176,6 +176,16 @@
 .recipe__item {
     text-align: center;
     margin-top: 10px;
+}
+
+.container__category {
+    display: flex;
+    justify-content: center;
+}
+
+.container__category p {
+    font-size: .9rem;
+    color: var(--brown);
 }
 
 .container__price {
@@ -334,6 +344,67 @@
     color: var(--brown);
 }
 
+/***** categories *****/
+.category-type__title {
+    width: 50%;
+    margin-left: 25%;
+}
+
+.category-type__title:first-child {
+    margin-top: 2%;
+}
+
+.checkbox__container {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.label--checkbox {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.label--checkbox input {
+    margin-right: 5px;
+    height: 25px;
+}
+
+.container--cat {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 1%;
+}
+
+.container__title--cat {
+    margin-top: 0;
+    min-width: 30%;
+    text-align: left;
+}
+
+.btns__container--cat {
+    margin: 0 0 0 auto;
+}
+
+.btn--cat {
+    text-decoration: none;
+    margin: 5px;
+}
+
+.form__select--cat {
+    width: 50%;
+}
+
+@media (max-width: 1140px) {
+    .container--ing {
+        width: 25%;
+    }
+}
+
 @media (max-width: 768px) {
     .add-item__form {
         width: 100%;
@@ -357,7 +428,8 @@
     }
 
     .form__input,
-    .form__textarea {
+    .form__textarea,
+    .form__select--cat {
         width: 75%;
     }
 
@@ -367,7 +439,8 @@
 
     .food-cost__container,
     .ingredients__container,
-    .items__container {
+    .items__container,
+    .checkbox__container {
         width: 75%;
     }
 
@@ -396,5 +469,17 @@
     .recipe-list__item {
         font-size: 75%;
         margin: 0;
+    }
+
+    .category-type__title {
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    .container--cat {
+        flex-direction: column;
+        width: 90%;
+        margin-left: 5%;
+        align-items: flex-start;
     }
 }
