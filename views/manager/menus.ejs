@@ -110,11 +110,11 @@
             btnContainer.appendChild(saveOrderBtn);
             menuContainer.insertAdjacentElement('afterbegin', btnContainer);
 
-            menu.items.sort((a, b) => {
+            menu.items?.sort((a, b) => {
                 return a.position - b.position;
             });
 
-            menu.items.forEach( item => {
+            menu.items?.forEach( item => {
                             const itemEl = document.createElement('div');
                             itemEl.dataset.position = item.position;
                             itemEl.classList.add('menu__item');

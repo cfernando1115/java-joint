@@ -17,22 +17,22 @@
                     <% if(editing || valError) { %> value="<%= item.title %>" <% } %>/>
                 <label class="form__label" for="categoryId">Main Category</label>
                 <select class="form__select form__select--cat <%= validationErrors.find(e => e.param === 'categoryId') ? 'input--invalid' : '' %>" name="categoryId">
-                    <% if(!editing && !valError) { %>
+                    <% if(!editing && !valError || (editing && !item.category)) { %>
                         <option selected value="">**Select Main Category**</option>
                     <% } %> 
                     <% categories.filter(cat => cat.main === 'true').forEach(cat => { %>
-                        <option value="<%= cat._id %>" <% if((editing || valError) && (item.category?.title == cat.title)) { __append('selected') } %>>
+                        <option value="<%= cat._id %>" <% if((editing || valError) && (item.category?.title === cat.title)) { __append('selected') } %>>
                             <%= cat.title %>
                         </option>
                     <% }) %>
                 </select>
                 <label class="form__label" for="subcategoryId">Subcategory</label>
                 <select class="form__select form__select--cat <%= validationErrors.find(e => e.param === 'subcategoryId') ? 'input--invalid' : '' %>" name="subcategoryId">
-                    <% if(!editing && !valError) { %>
+                    <% if((!editing && !valError) || (editing && !item.subcategory)) { %>
                         <option selected value="">**Select Subcategory**</option>
                     <% } %> 
                     <% categories.filter(cat => cat.main === 'false').forEach(cat => { %>
-                        <option value="<%= cat._id %>" <% if((editing || valError) && (item.subcategory?.title == cat.title)) { __append('selected') } %>>
+                        <option value="<%= cat._id %>" <% if((editing || valError) && (item.subcategory?.title === cat.title)) { __append('selected') } %>>
                             <%= cat.title %>
                         </option>
                     <% }) %>

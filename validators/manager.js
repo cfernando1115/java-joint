@@ -13,20 +13,22 @@ module.exports.addEditItem = [
         .isString()
         .isLength({ min: 2 })
         .withMessage('Category is required'),
-    body('subcategoryId')
-        .trim()
-        .isString()
-        .isLength({ min: 2 })
-        .withMessage('Subcategory is required'),
     body('imagePath')
         .trim()
         .isURL()
         .withMessage('Please enter a valid image url'),
     body('ingredients')
         .custom((value) => {
-            if (!value.some(val => val._id !== '')) {
+            console.log(value);
+            if (!value || !value.some(val => val._id !== '')) {
                 throw new Error('Please enter ingredient(s)');
             }
+
+            value.forEach(v => {
+                if (v._id !== '' && v.qty === '0') {
+                    throw new Error('Please enter a quantity for each ingredient');
+                }
+            })
             return true;
         })
 ];

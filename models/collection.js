@@ -64,6 +64,30 @@ class Collection {
             .find({}, projection)
             .toArray();
     };
+
+    static async removeOrphans(collectionName, deletedFromCollection, deletedProp, deletedId) {
+        const db = getDb();
+
+        await db.collection(collectionName)
+            .updateMany({ [deletedProp]: new mongodb.ObjectId(deletedId) }, { $unset: { [deletedFromCollection]: '' } })      
+    };
+
+    static async removeFromDocumentArray(collectionName, array, deletedId, arrayProp = null) {
+        const db = getDb();
+
+        const collection = await Collection.getAll(collectionName);
+
+        collection.forEach(async (item) => {
+            if (arrayProp) {
+                item[array] = item[array].filter(i => i[arrayProp]._id.toString() != deletedId);
+            } else {
+                item[array] = item[array].filter(i => i._id.toString() != deletedId);
+            }
+
+            await db.collection(collectionName)
+                .updateOne({ _id: item._id }, { $set: item });
+        });
+    };
 };
 
 module.exports = Collection;

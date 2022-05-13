@@ -22,10 +22,10 @@
                                 <label class="form__label" for="items[<%= i %>][_id]">Item</label>
                                 <select class="form__select select--item" name="items[<%= i %>][_id]">
                                     <option selected 
-                                        <% if(editing) { %> 
+                                        <% if(editing && menu.items.length > 0) { %> 
                                             value="<%= menu.items[i]._id %>" 
                                         <% } %>>
-                                        <% if(editing) { %>
+                                        <% if(editing && menu.items.length > 0) { %>
                                             <%= menu.items[i].title %>
                                         <% } else { %>
                                             **Select Item**

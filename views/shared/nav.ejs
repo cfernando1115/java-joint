@@ -36,7 +36,7 @@
         <% } %>
         <% if(role==="guest") { %>
             <% if(authenticated) { %>
-                <li class="link-list__item"><a class="nav__link">Menu</a></li>
+                <li class="link-list__item"><a href="/guest/menu" class="nav__link <%= path === '/guest/menu' ? 'nav__link--active' : '' %>">Menu</a></li>
                 <li class="link-list__item"><a class="nav__link">Bill</a></li>
                 <li class="link-list__item">
                     <form action="/logout" method="post">

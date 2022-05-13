@@ -2,6 +2,7 @@ const getDb = require('../util/db').getDb;
 const mongodb = require('mongodb');
 
 const Collection = require('./collection');
+const Item = require('./item');
 
 class Menu extends Collection {
     constructor(title, created, items, id) {
@@ -13,6 +14,27 @@ class Menu extends Collection {
             ? new mongodb.ObjectId(id)
             : null;
     };
+
+    static findByTitle(title) {
+        const db = getDb();
+
+        return db.collection('menus')
+            .find({ title: title })
+            .next();
+    }
+
+    static async populateProducts(menu) {
+        if (menu.items) {
+            menu.items = await Promise.all(menu.items
+                .map(async (item, index) => {
+                    item = await Item.findById('items', item._id, { projection: { price: 1, title: 1, description: 1, imagePath: 1 } });
+                    item.position = menu.items[index].position;
+                    return item;
+                }));
+        }
+        
+        return menu;
+    }
 };
 
 module.exports = Menu;

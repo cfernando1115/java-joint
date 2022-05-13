@@ -19,9 +19,12 @@
 - [x] Ingredient CRUD - Manager
 - [x] Item CRUD - Manager
 - [x] Menu CRUD - Manager
+- [x] Category CRUD - Manager
+- [ ] Store/Menu Scheduler - Manager
 - [x] Item Feature: Food cost alerts - Manager
 - [x] Item Feature: Dynamic food cost calculator - Manager
 - [ ] Order CRUD - Guest
+- [ ] Bill Viewer - Guest
 - [x] Login functionality - Guest
 - [ ] Login functionality - Manager
 - [x] Authentication (sessions)

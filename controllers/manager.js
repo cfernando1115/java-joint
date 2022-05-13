@@ -3,8 +3,10 @@ const Item = require('../models/item');
 const Menu = require('../models/menu');
 const Category = require('../models/category');
 const ingRows = require('../util/viewHelpers').ingredientRows;
+const itemRow = require('../util/viewHelpers').itemRows;
 
 const { validationResult } = require('express-validator');
+const { itemRows } = require('../util/viewHelpers');
 
 module.exports.getIndex = (req, res, next) => {
     res.render('manager/index', {
@@ -81,6 +83,8 @@ module.exports.postDeleteIngredient = async (req, res, next) => {
 
     await Ingredient.deleteById('ingredients', ingId);
 
+    Item.removeFromDocumentArray('items', 'recipe', ingId, 'ingredient');
+
     res.redirect('/manager/ingredients');
 };
 
@@ -98,7 +102,10 @@ module.exports.getItems = async (req, res, next) => {
 
 module.exports.getAddItem = async (req, res, next) => {
     const ingredients = await Ingredient.getDropdown('ingredients', { projection: { title: 1, price: 1 } });
+
     const categories = await Category.getAll('categories');
+    categories.push({ title: 'Unassigned', main: 'false' });
+    categories.sort((a, b) => (a.title > b.title) ? 1 : -1);
 
     res.render('manager/edit-item', {
         docTitle: 'Add Item',
@@ -124,7 +131,10 @@ module.exports.getEditItem = async (req, res, next) => {
     }
 
     const ingredients = await Ingredient.getDropdown('ingredients', { projection: { title: 1, price: 1 } });
+
     const categories = await Category.getAll('categories');
+    categories.push({ title: 'Unassigned', main: 'false' });
+    categories.sort((a, b) => (a.title > b.title) ? 1 : -1);
 
     res.render('manager/edit-item', {
         docTitle: 'Edit Item',
@@ -133,7 +143,7 @@ module.exports.getEditItem = async (req, res, next) => {
         ingredients: ingredients,
         categories: categories,
         item: item,
-        ingRows: item.recipe.length,
+        ingRows: item.recipe.length === 0 ? ingRows : item.recipe.length,
         path: '/manager/edit-item',
         valError: false,
         errorMessage: null,
@@ -180,7 +190,7 @@ module.exports.postAddEditItem = async (req, res, next) => {
         const ingredients = await Ingredient.getDropdown('ingredients', { projection: { title: 1, price: 1 } });
         const categories = await Category.getAll('categories');
 
-        const item = { title, categoryId, subcategoryId, price, description, imagePath, recipe, foodCost, foodCostPercentage, id};
+        const item = { title, category, subcategory, price, description, imagePath, recipe, foodCost, foodCostPercentage, _id: id};
 
         return res.status(422).render('manager/edit-item', {
             path: id ? '/manager/edit-item' : '/manager/add-item',
@@ -208,6 +218,8 @@ module.exports.postDeleteItem = async (req, res, next) => {
 
     await Item.deleteById('items', itemId);
 
+    Menu.removeFromDocumentArray('menus', 'items', itemId);
+
     res.redirect('/manager/items');
 };
 
@@ -224,16 +236,10 @@ module.exports.getMenus = async (req, res, next) => {
 
 module.exports.getMenu = async (req, res, next) => {
     const menuId = req.params.id;
-    const menu = await Menu.findById('menus', menuId);
+    let menu = await Menu.findById('menus', menuId);
 
     if (menu.items) {
-        //prices change frequently...store refs for now
-        menu.items = await Promise.all(menu.items
-            .map(async (item, index) => {
-                item = await Item.findById('items', item._id, { projection: { price: 1, title: 1, description: 1, imagePath: 1 } });
-                item.position = menu.items[index].position;
-                return item;
-            }));
+        menu = await Menu.populateProducts(menu);
     }
     
     res.send(JSON.stringify(menu));
@@ -245,7 +251,7 @@ module.exports.getAddMenu = async (req, res, next) => {
         docTitle: 'Add Menu',
         role: 'manager',
         items: items,
-        itemRows: 6,
+        itemRows: itemRows,
         editing: false,
         path: '/manager/add-menu'
     });
@@ -275,7 +281,7 @@ module.exports.getEditMenu = async (req, res, next) => {
         editing: true,
         items: items,
         menu: menu,
-        itemRows: menu.items.length
+        itemRows: menu.items.length === 0 ? itemRows : menu.items.length
     });
 };
 
@@ -386,7 +392,15 @@ module.exports.postAddEditCategory = async (req, res, next) => {
 module.exports.postDeleteCategory = async (req, res, next) => {
     const categoryId = req.body.id;
 
+    const category = await Category.findById('categories', categoryId);
+
     await Category.deleteById('categories', categoryId);
+
+    const deletedProp = category.main
+        ? 'category._id'
+        : 'subcategory._id';
+        
+    Item.removeOrphans('items', 'category', deletedProp, categoryId);
 
     res.redirect('/manager/categories');
 };
