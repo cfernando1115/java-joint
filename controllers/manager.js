@@ -4,6 +4,7 @@ const Menu = require('../models/menu');
 const Category = require('../models/category');
 const ingRows = require('../util/viewHelpers').ingredientRows;
 const itemRow = require('../util/viewHelpers').itemRows;
+const scheduleOptions = require('../util/menuSchedule').scheduleSelectOptions;
 
 const { validationResult } = require('express-validator');
 const { itemRows } = require('../util/viewHelpers');
@@ -252,6 +253,7 @@ module.exports.getAddMenu = async (req, res, next) => {
         role: 'manager',
         items: items,
         itemRows: itemRows,
+        scheduleOptions: scheduleOptions,
         editing: false,
         path: '/manager/add-menu'
     });
@@ -281,12 +283,14 @@ module.exports.getEditMenu = async (req, res, next) => {
         editing: true,
         items: items,
         menu: menu,
+        scheduleOptions: scheduleOptions,
         itemRows: menu.items.length === 0 ? itemRows : menu.items.length
     });
 };
 
 module.exports.postAddEditMenu = async (req, res, next) => {
-    const { title, created, items, id } = req.body;
+    console.log(req.body);
+    const { title, created, items, active, start, end, id } = req.body;
 
     let menuItems = [];
 
@@ -299,7 +303,7 @@ module.exports.postAddEditMenu = async (req, res, next) => {
             });
     }
 
-    const newMenu = new Menu(title, created, menuItems, id);
+    const newMenu = new Menu(title, created, menuItems, active, start, end, id);
 
     await newMenu.save('menus');
  
@@ -318,6 +322,47 @@ module.exports.saveMenuOrder = async (req, res, next) => {
     res.send({ message: 'Order saved' });
 };
 
+module.exports.getMenuSchedule = async (req, res, next) => {
+    const menus = await Menu.get('menus', { active: 'true' }, { projection: { title: 1, start: 1, end: 1 } });
+
+    res.render('manager/menu-schedule', {
+        docTitle: 'Menu Schedule',
+        role: 'manager',
+        menus: menus,
+        scheduleOptions: scheduleOptions,
+        successMessage: null,
+        path: '/manager/menu-schedule'
+    });
+};
+
+module.exports.postMenuSchedule = async (req, res, next) => {
+    const menus = req.body.menu;
+
+    if (menus.length > 0) {
+        menus.forEach(async (menu) => {
+            const currentMenu = await Menu.findById('menus', menu._id);
+
+            if (currentMenu) {
+                if (currentMenu.start !== menu.start || currentMenu.end !== menu.end) {
+                    const updatedMenu = new Menu(currentMenu.title, currentMenu.created, currentMenu.items, currentMenu.active, menu.start, menu.end, menu._id);
+                    await updatedMenu.save('menus');
+                }
+            }
+        });
+    }
+
+    const updatedMenus = await Menu.get('menus', { active: 'true' }, { projection: { title: 1, start: 1, end: 1 } });
+
+    res.render('manager/menu-schedule', {
+        docTitle: 'Menu Schedule',
+        role: 'manager',
+        menus: updatedMenus,
+        scheduleOptions: scheduleOptions,
+        successMessage: 'Menu schedule saved',
+        path: '/manager/menu-schedule'
+    });
+};
+
 module.exports.getCategories = async (req, res, next) => {
     const categories = await Category.getAll('categories');
     categories.sort((a, b) => (a.title > b.title) ? 1 : -1);
@@ -326,7 +371,6 @@ module.exports.getCategories = async (req, res, next) => {
         docTitle: 'Categories',
         role: 'manager',
         categories: categories,
-        menuLoaded: false,
         path: '/manager/categories'
     });
 };

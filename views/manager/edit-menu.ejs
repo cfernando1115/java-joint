@@ -12,6 +12,30 @@
                 <% if(editing) { %>
                     <input type="hidden" name="created" value="<%= menu.created %>" />
                 <% } %>
+                <div class="form-group__radio">
+                    <label class="form__label" for="active">
+                        <input type="radio" name="active" value="true" checked <% if(editing && (menu.active === 'true')) { __append('checked') } %> />Active</label>
+                    <label class="form__label" for="active">
+                        <input type="radio" name="active" value="false" <% if(editing && (menu.active === 'false')) { __append('checked') } %> />Inactive</label>
+                </div>
+                <div class="time-select__container">
+                    <div class="form-group form-group__select--menu-schedule">
+                        <label class="form__label" for="start">Start Time:</label>
+                        <select class="form__select time-select" name="start">
+                            <% scheduleOptions.forEach(opt => { %>
+                                <option value="<%= opt.value %>" <% if(editing && (menu.start === opt.value)) { __append('selected') } %>><%= opt.display %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="form-group form-group__select--menu-schedule">
+                        <label class="form__label" for="end">End time:</label>
+                        <select class="form__select time-select" name="end">
+                            <% scheduleOptions.forEach(opt => { %>
+                                <option value="<%= opt.value %>" <% if(editing && (menu.end === opt.value)) { __append('selected') } %>><%= opt.display %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                </div>
                 <label class="form__label" for="title">Title</label>
                 <input type="text" class="form__input" name="title" 
                     <% if(editing) { %> value="<%= menu.title %>" <% } %>/>

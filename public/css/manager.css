@@ -262,7 +262,8 @@
     margin-right: 20px;
 }
 
-.get-menu__form {
+.get-menu__form,
+.menu-schedule__form {
     width: 50%;
     display: flex;
     align-items: center;
@@ -289,6 +290,18 @@
     color: white;
     width: 90%;
     margin: 10px 0;
+}
+
+.form-group__radio {
+    display: flex;
+    width: 50%;
+    margin-top: 10px;
+    align-items:baseline;
+}
+
+.form-group__radio input {
+    margin-right: 10px;
+    vertical-align:middle;
 }
 
 .menu-item__img {
@@ -342,6 +355,36 @@
 .delete-icon {
     font-size: 200%;
     color: var(--brown);
+}
+
+.menu-schedule__form {
+    flex-direction: column;
+}
+
+.menu__container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.time-select__container {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.form-group__select--menu-schedule {
+    width: 50%;
+}
+
+.form-group__select--menu-schedule .form__label{
+    width: 90%;
+}
+
+.form-group__select--menu-schedule:last-child {
+    align-items: flex-end;
 }
 
 /***** categories *****/
@@ -440,7 +483,16 @@
     .food-cost__container,
     .ingredients__container,
     .items__container,
-    .checkbox__container {
+    .checkbox__container,
+    .menu-schedule__form {
+        width: 75%;
+    }
+
+    .time-select__container {
+        width: 100%;
+    }
+
+    .add-item__form .time-select__container {
         width: 75%;
     }
 

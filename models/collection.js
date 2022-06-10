@@ -22,6 +22,12 @@ class Collection {
             .toArray();
     };
 
+    static get(collection, expression, projection) {
+        const db = getDb();
+        return db.collection(collection).find(expression, projection)
+            .toArray();
+    };
+
     static getTitleById(collection, id) {
         const db = getDb();
 

@@ -5,11 +5,14 @@ const Collection = require('./collection');
 const Item = require('./item');
 
 class Menu extends Collection {
-    constructor(title, created, items, id) {
+    constructor(title, created, items, active, start, end, id) {
         super();
         this.title = title;
         this.created = created ?? new Date().toLocaleDateString();
         this.items = items;
+        this.active = active;
+        this.start = start;
+        this.end = end;
         this._id = id
             ? new mongodb.ObjectId(id)
             : null;

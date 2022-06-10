@@ -47,6 +47,10 @@ router.get('/menus/:id', managerController.getMenu);
 
 router.post('/menus/save-order/:id', managerController.saveMenuOrder);
 
+router.get('/menu-schedule', managerController.getMenuSchedule);
+
+router.post('/menu-schedule', managerController.postMenuSchedule);
+
 router.get('/categories', managerController.getCategories);
 
 router.get('/add-category', managerController.getAddCategory);

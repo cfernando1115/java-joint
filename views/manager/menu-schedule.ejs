@@ -1,0 +1,46 @@
+<%- include('../shared/head.ejs') %>
+<link rel="stylesheet" href="/css/manager.css">
+<link rel="stylesheet" href="/css/nav.css">
+</head>
+<body class="body">
+<%- include('../shared/nav.ejs') %>
+<main>
+    <% if(successMessage) { %>
+        <div class="flash-message flash-message--error"><%= successMessage %></div>
+    <% } %>
+    <% if(menus.length > 0)  { %>
+        <div class="form-container">
+            <form id="menu-schedule-form" class="menu-schedule__form" method="POST" action="/manager/menu-schedule">
+                <div class="menu__container">
+                    <% menus.forEach((menu, i) => { %>
+                        <h3 class="container__title"><%= menu.title %></h3>
+                        <input name="menu[<%= i %>][_id]" value="<%= menu._id %>" hidden />
+                        <div class="time-select__container">
+                            <div class="form-group form-group__select--menu-schedule">
+                                <label class="form__label" for="menu[<%= i %>][start]">Start Time:</label>
+                                <select class="form__select time-select" name="menu[<%= i %>][start]">
+                                    <% scheduleOptions.forEach(opt => { %>
+                                        <option value="<%= opt.value %>" <% if(menu.start === opt.value) { __append('selected') } %>><%= opt.display %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <div class="form-group form-group__select--menu-schedule">
+                                <label class="form__label" for="menu[<%= i %>][end]">End time:</label>
+                                <select class="form__select time-select" name="menu[<%= i %>][end]">
+                                    <% scheduleOptions.forEach(opt => { %>
+                                        <option value="<%= opt.value %>" <% if(menu.end === opt.value) { __append('selected') } %>><%= opt.display %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <button class="btn btn--submit" type="submit">Update Schedule</button>
+            </form>
+        </div>
+    <% } else { %>
+        <h1>No menus yet!</h1>
+    <% } %>
+</main>
+<%- include('../shared/end.ejs') %>

@@ -14,21 +14,23 @@ module.exports.getMenu = async (req, res, next) => {
     const current = new Date();
     let currentMenuTitle;
 
-    if (current > schedule.open && current < schedule.close) {
-        current < schedule.menuSchedule.lunch
-            ? currentMenuTitle = schedule.breakfastMenu
-            : current < schedule.menuSchedule.dinner
-                ? currentMenuTitle = schedule.lunchMenu
-                : currentMenuTitle = schedule.dinnerMenu;
-    }
+    //Replace using menu start/end...
+    
+    // if (current > schedule.open && current < schedule.close) {
+    //     current < schedule.menuSchedule.lunch
+    //         ? currentMenuTitle = schedule.breakfastMenu
+    //         : current < schedule.menuSchedule.dinner
+    //             ? currentMenuTitle = schedule.lunchMenu
+    //             : currentMenuTitle = schedule.dinnerMenu;
+    // }
 
-    let currentMenu = await Menu.findByTitle(currentMenuTitle);
+    // let currentMenu = await Menu.findByTitle(currentMenuTitle);
 
-    if (currentMenu.items) {
-        currentMenu = await Menu.populateProducts(currentMenu);
-    }
+    // if (currentMenu.items) {
+    //     currentMenu = await Menu.populateProducts(currentMenu);
+    // }
 
-    console.log(currentMenu);
+    // console.log(currentMenu);
 
     res.render('guest/menu', {
         docTitle: 'Menu',
