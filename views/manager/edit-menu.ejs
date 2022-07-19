@@ -21,30 +21,30 @@
                 <div class="time-select__container">
                     <div class="form-group form-group__select--menu-schedule">
                         <label class="form__label" for="start">Start Time:</label>
-                        <select class="form__select time-select" name="start">
+                        <select class="form__select time-select" name="start" id="start">
                             <% scheduleOptions.forEach(opt => { %>
-                                <option value="<%= opt.value %>" <% if(editing && (menu.start === opt.value)) { __append('selected') } %>><%= opt.display %></option>
+                                <option value="<%= opt.value %>" <% if(editing && (menu.start === +opt.value)) { __append('selected') } %>><%= opt.display %></option>
                             <% }); %>
                         </select>
                     </div>
                     <div class="form-group form-group__select--menu-schedule">
                         <label class="form__label" for="end">End time:</label>
-                        <select class="form__select time-select" name="end">
+                        <select class="form__select time-select" name="end" id="end">
                             <% scheduleOptions.forEach(opt => { %>
-                                <option value="<%= opt.value %>" <% if(editing && (menu.end === opt.value)) { __append('selected') } %>><%= opt.display %></option>
+                                <option value="<%= opt.value %>" <% if(editing && (menu.end === +opt.value)) { __append('selected') } %>><%= opt.display %></option>
                             <% }); %>
                         </select>
                     </div>
                 </div>
                 <label class="form__label" for="title">Title</label>
-                <input type="text" class="form__input" name="title" 
+                <input type="text" class="form__input" name="title" id="title"
                     <% if(editing) { %> value="<%= menu.title %>" <% } %>/>
                 <div class="items__container">
                     <% for( let i=0; i<itemRows; i++) { %>
                         <div class="item__select">
                             <div class="form-group form-group__select select--item">
                                 <label class="form__label" for="items[<%= i %>][_id]">Item</label>
-                                <select class="form__select select--item" name="items[<%= i %>][_id]">
+                                <select class="form__select select--item" name="items[<%= i %>][_id]" id="items[<%= i %>][_id]">
                                     <option selected 
                                         <% if(editing && menu.items.length > 0) { %> 
                                             value="<%= menu.items[i]._id %>" 
@@ -60,7 +60,7 @@
                                     <% }) %>
                                 </select>
                             </div>
-                            <button type="button" onclick="menu.deleteMenuItem(event)" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
+                            <button type="button" onclick="menu.deleteMenuItem(event)" aria-label="delete item" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
                         </div>
                     <% } %>
                 </div>

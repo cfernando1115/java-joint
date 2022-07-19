@@ -19,7 +19,6 @@ module.exports.addEditItem = [
         .withMessage('Please enter a valid image url'),
     body('ingredients')
         .custom((value) => {
-            console.log(value);
             if (!value || !value.some(val => val._id !== '')) {
                 throw new Error('Please enter ingredient(s)');
             }

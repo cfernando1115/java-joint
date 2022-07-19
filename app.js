@@ -43,6 +43,12 @@ const authRoutes = require('./routes/auth');
 const User = require('./models/user');
 
 app.use((req, res, next) => {
+    res.locals.authenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
+app.use((req, res, next) => {
     if (req.session && req.session.userId) {
         User.findById('users', req.session.userId)
             .then(user => {
@@ -56,12 +62,6 @@ app.use((req, res, next) => {
     else {
         next();
     }
-});
-
-app.use((req, res, next) => {
-    res.locals.authenticated = req.session.isLoggedIn;
-    res.locals.csrfToken = req.csrfToken();
-    next();
 });
 
 app.use('/manager', managerRoutes);

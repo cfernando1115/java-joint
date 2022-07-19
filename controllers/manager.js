@@ -289,7 +289,6 @@ module.exports.getEditMenu = async (req, res, next) => {
 };
 
 module.exports.postAddEditMenu = async (req, res, next) => {
-    console.log(req.body);
     const { title, created, items, active, start, end, id } = req.body;
 
     let menuItems = [];
@@ -303,7 +302,7 @@ module.exports.postAddEditMenu = async (req, res, next) => {
             });
     }
 
-    const newMenu = new Menu(title, created, menuItems, active, start, end, id);
+    const newMenu = new Menu(title, created, menuItems, active, +start, +end, id);
 
     await newMenu.save('menus');
  
@@ -344,7 +343,7 @@ module.exports.postMenuSchedule = async (req, res, next) => {
 
             if (currentMenu) {
                 if (currentMenu.start !== menu.start || currentMenu.end !== menu.end) {
-                    const updatedMenu = new Menu(currentMenu.title, currentMenu.created, currentMenu.items, currentMenu.active, menu.start, menu.end, menu._id);
+                    const updatedMenu = new Menu(currentMenu.title, currentMenu.created, currentMenu.items, currentMenu.active, +menu.start, +menu.end, menu._id);
                     await updatedMenu.save('menus');
                 }
             }
@@ -390,7 +389,7 @@ module.exports.getAddCategory = async (req, res, next) => {
 module.exports.getEditCategory = async (req, res, next) => {
     const categoryId = req.params.id;
 
-    const category = await Item.findById('categories', categoryId);
+    const category = await Category.findById('categories', categoryId);
 
     if (!category) {
         return res.redirect('/manager');

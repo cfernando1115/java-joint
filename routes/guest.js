@@ -7,6 +7,10 @@ const router = express.Router();
 
 router.get('/', isAuth, guestController.getIndex);
 
-router.get('/menu', isAuth, guestController.getMenu);
+router.get('/menus', isAuth, guestController.getMenus);
+
+router.get('/cart', isAuth, guestController.getCart);
+
+router.post('/cart', isAuth, guestController.postCart);
 
 module.exports = router;

@@ -97,7 +97,7 @@ module.exports.postSignup = async (req, res, next) => {
     try {        
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const user = new User(email, hashedPassword, bill = { items: [] });
+        const user = new User(email, hashedPassword, cart = { items: [] });
     
         await user.save('users');
 
@@ -144,8 +144,8 @@ module.exports.postPasswordReset = (req, res, next) => {
             const resetToken = token;
             const resetTokenExpiration = Date.now() + 360000;
 
-            const { password, bill, _id } = user;
-            const updatedUser = new User(email, password, bill, _id, resetToken, resetTokenExpiration);
+            const { password, cart, _id } = user;
+            const updatedUser = new User(email, password, cart, _id, resetToken, resetTokenExpiration);
 
             await updatedUser.save('users');
 

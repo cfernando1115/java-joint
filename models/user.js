@@ -4,11 +4,11 @@ const mongodb = require('mongodb');
 const Collection = require('./collection');
 
 class User extends Collection {
-    constructor(email, password, bill, id, resetToken = null, resetTokenExpiration = null) {
+    constructor(email, password, cart, id, resetToken = null, resetTokenExpiration = null) {
         super();
         this.email = email;
         this.password = password;
-        this.bill = bill;
+        this.cart = cart;
         this._id = id
             ? new mongodb.ObjectId(id)
             : null;
@@ -31,6 +31,17 @@ class User extends Collection {
             .find({ resetToken: token })
             .next();
     };
+
+    static async updateCart(userId, items) {
+        const db = getDb();
+
+        const user = await User.findById('users', userId);
+
+        if (user) {
+            db.collection('users')
+                .updateOne({ _id: user._id }, { $set: { 'cart.items': items } });
+        }
+    }
 };
 
 module.exports = User;

@@ -1,6 +1,8 @@
 const Item = require('../models/item');
 const Menu = require('../models/menu');
+const User = require('../models/user');
 const schedule = require('../util/menuSchedule');
+const { itemRows } = require('../util/viewHelpers');
 
 module.exports.getIndex = (req, res, next) => {
     res.render('guest/index', {
@@ -10,31 +12,46 @@ module.exports.getIndex = (req, res, next) => {
     });
 };
 
-module.exports.getMenu = async (req, res, next) => {
+module.exports.getMenus = async (req, res, next) => {
     const current = new Date();
-    let currentMenuTitle;
+    const currentTime = current.getHours() + (current.getMinutes() / 60);
 
-    //Replace using menu start/end...
+    let activeMenus = await Menu.get('menus', { active: 'true', start: { $lt: currentTime }, end: { $gt: currentTime } });
     
-    // if (current > schedule.open && current < schedule.close) {
-    //     current < schedule.menuSchedule.lunch
-    //         ? currentMenuTitle = schedule.breakfastMenu
-    //         : current < schedule.menuSchedule.dinner
-    //             ? currentMenuTitle = schedule.lunchMenu
-    //             : currentMenuTitle = schedule.dinnerMenu;
-    // }
+    activeMenus = await Promise.all(activeMenus.map(async (menu) => {
+        return await Menu.populateProducts(menu);
+    }));
 
-    // let currentMenu = await Menu.findByTitle(currentMenuTitle);
-
-    // if (currentMenu.items) {
-    //     currentMenu = await Menu.populateProducts(currentMenu);
-    // }
-
-    // console.log(currentMenu);
-
-    res.render('guest/menu', {
-        docTitle: 'Menu',
+    res.render('guest/menus', {
+        docTitle: 'Menus',
         role: 'guest',
-        path: '/guest/menu'
+        path: '/guest/menus',
+        menus: activeMenus,
+    });
+};
+
+module.exports.getCart = async (req, res, next) => {
+
+};
+
+module.exports.postCart = async (req, res, next) => {
+    const menus = req.body.menus;
+    let orderedItems = [];
+
+    orderedItems = menus.flatMap(menu => menu.items.filter(item => +item.qty > 0));
+    
+    await User.updateCart(req.user._id, orderedItems);
+
+    cartItems = await Promise.all(orderedItems
+        .map(async (item, index) => {
+            item.detail = await Item.findById('items', item._id, { projection: { price: 1, title: 1, _id: 0 } });
+            return item;
+        }));
+    
+    res.render('guest/cart', {
+        docTitle: 'Cart',
+        role: 'guest',
+        path: '/guest/cart',
+        items: cartItems,
     });
 };

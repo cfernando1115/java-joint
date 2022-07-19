@@ -13,10 +13,10 @@
             <form id="add-item-form" class="add-item__form" method="POST" 
                 action="/manager/<% if(editing) { %>edit-item<% } else { %>add-item<% } %>">
                 <label class="form__label" for="title">Title</label>
-                <input type="text" class="form__input <%= validationErrors.find(e => e.param === 'title') ? 'input--invalid' : '' %>" name="title" 
+                <input type="text" class="form__input <%= validationErrors.find(e => e.param === 'title') ? 'input--invalid' : '' %>" name="title" id="title"
                     <% if(editing || valError) { %> value="<%= item.title %>" <% } %>/>
                 <label class="form__label" for="categoryId">Main Category</label>
-                <select class="form__select form__select--cat <%= validationErrors.find(e => e.param === 'categoryId') ? 'input--invalid' : '' %>" name="categoryId">
+                <select class="form__select form__select--cat <%= validationErrors.find(e => e.param === 'categoryId') ? 'input--invalid' : '' %>" name="categoryId" id="cateegoryId">
                     <% if(!editing && !valError || (editing && !item.category)) { %>
                         <option selected value="">**Select Main Category**</option>
                     <% } %> 
@@ -27,7 +27,7 @@
                     <% }) %>
                 </select>
                 <label class="form__label" for="subcategoryId">Subcategory</label>
-                <select class="form__select form__select--cat <%= validationErrors.find(e => e.param === 'subcategoryId') ? 'input--invalid' : '' %>" name="subcategoryId">
+                <select class="form__select form__select--cat <%= validationErrors.find(e => e.param === 'subcategoryId') ? 'input--invalid' : '' %>" name="subcategoryId" id="subcategoryId">
                     <% if((!editing && !valError) || (editing && !item.subcategory)) { %>
                         <option selected value="">**Select Subcategory**</option>
                     <% } %> 
@@ -38,24 +38,24 @@
                     <% }) %>
                 </select>
                 <label class="form__label" for="price">Price</label>
-                <input type="number" step="0.01" class="price form__input" name="price"
+                <input type="number" step="0.01" class="price form__input" name="price" id="price"
                     <% if(editing || valError) { %> value="<%= item.price %>" <% } else { %> value="0.00" <% } %>/>
                 <div class="food-cost__container">
                     <div class="food-cost">
                         <div class="form-group form-group__cost">
                             <label class="form__label" for="foodCost">Food Cost</label>
-                            <input disabled type="number" step="0.01" class="cost form__cost disabled" name="foodCost" 
+                            <input disabled type="number" step="0.01" class="cost form__cost disabled" name="foodCost" id="foodCost"
                                 <% if(editing || valError) { %> value="<%= item.foodCost %>" } else { %> value="0.00" <% } %>/>
                         </div>
                         <div class="form-group form-group__percent">
                             <label class="form__label" for="foodCostPercentage">%</label>
-                            <input disabled type="number" class="percentage form__input form__input--percent disabled" name="foodCostPercentage"
+                            <input disabled type="number" class="percentage form__input form__input--percent disabled" name="foodCostPercentage" id="foodCostPercentage"
                                 <% if(editing || valError) { %> value="<%= item.foodCostPercentage %>" <% } else { %> value="0" <% } %>/>
                         </div>
                     </div>
                 </div>
                 <label class="form__label" for="description">Description</label>
-                <textarea type="textarea" class="form__textarea" rows="5" name="description"><% if(editing || valError) { %><%= item.description %><% } %></textarea>
+                <textarea type="textarea" class="form__textarea" rows="5" name="description" id="description"><% if(editing || valError) { %><%= item.description %><% } %></textarea>
                 <label class="form__label" for="imagePath">Image Path</label>
                 <input type="text" class="form__input <%= validationErrors.find(e => e.param === 'imagePath') ? 'input--invalid' : '' %>" name="imagePath" 
                     <% if(editing || valError) { %> value="<%= item.imagePath %>" <% } %>/>
@@ -64,7 +64,7 @@
                         <div class="ingredient__select">
                             <div class="form-group form-group__select">
                                 <label class="form__label" for="ingredients[<%= i %>][title]">Ingredient</label>
-                                <select class="ing-select form__select <%= i === 0 && validationErrors.find(e => e.param === 'ingredients') ? 'input--invalid' : '' %>" name="ingredients[<%= i %>][_id]">
+                                <select class="ing-select form__select <%= i === 0 && validationErrors.find(e => e.param === 'ingredients') ? 'input--invalid' : '' %>" name="ingredients[<%= i %>][_id]" id="ingredients[<%= i %>][title]">
                                     <option selected 
                                         <% if((editing || valError) && item.recipe.length > 0) { %> 
                                             value="<%= item.recipe[i].ingredient._id %>" data-price="<%= item.recipe[i].ingredient.price %>"
@@ -84,13 +84,13 @@
                             </div>
                             <div class="form-group form-group__qty">
                                 <label class="form__label" for="ingredients[<%= i %>][qty]">Qty</label>
-                                <input type="number" class="qty form__input form__input--qty <%= i === 0 && validationErrors.find(e => e.param === 'ingredients') ? 'input--invalid' : '' %>" name="ingredients[<%= i %>][qty]"
+                                <input type="number" class="qty form__input form__input--qty <%= i === 0 && validationErrors.find(e => e.param === 'ingredients') ? 'input--invalid' : '' %>" name="ingredients[<%= i %>][qty]" id="ingredients[<%= i %>][qty]"
                                     <% if((editing || valError) && item.recipe.length > 0) { %> 
                                         value="<%=item.recipe[i].qty %>" 
                                     <% } else { %> 
                                         value="0" <% } %> />
                             </div>
-                            <button type="button" onclick="item.deleteItemIng(event)" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
+                            <button type="button" onclick="item.deleteItemIng(event)" aria-label="delete ingredient" class="menu-item__delete"><i class="fas fa-trash-alt delete-icon"></i></button>
                         </div>
                     <% } %>
                 </div>

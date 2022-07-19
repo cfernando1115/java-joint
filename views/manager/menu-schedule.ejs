@@ -18,17 +18,17 @@
                         <div class="time-select__container">
                             <div class="form-group form-group__select--menu-schedule">
                                 <label class="form__label" for="menu[<%= i %>][start]">Start Time:</label>
-                                <select class="form__select time-select" name="menu[<%= i %>][start]">
+                                <select class="form__select time-select" name="menu[<%= i %>][start]" id="menu[<%= i %>][start]">
                                     <% scheduleOptions.forEach(opt => { %>
-                                        <option value="<%= opt.value %>" <% if(menu.start === opt.value) { __append('selected') } %>><%= opt.display %></option>
+                                        <option value="<%= opt.value %>" <% if(menu.start === +opt.value) { __append('selected') } %>><%= opt.display %></option>
                                     <% }); %>
                                 </select>
                             </div>
                             <div class="form-group form-group__select--menu-schedule">
                                 <label class="form__label" for="menu[<%= i %>][end]">End time:</label>
-                                <select class="form__select time-select" name="menu[<%= i %>][end]">
+                                <select class="form__select time-select" name="menu[<%= i %>][end]" id="menu[<%= i %>][end]">
                                     <% scheduleOptions.forEach(opt => { %>
-                                        <option value="<%= opt.value %>" <% if(menu.end === opt.value) { __append('selected') } %>><%= opt.display %></option>
+                                        <option value="<%= opt.value %>" <% if(menu.end === +opt.value) { __append('selected') } %>><%= opt.display %></option>
                                     <% }); %>
                                 </select>
                             </div>

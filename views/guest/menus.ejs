@@ -1,0 +1,52 @@
+    <%- include('../shared/head.ejs') %>
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/manager.css">
+    <link rel="stylesheet" href="/css/guest.css">
+</head>
+<body class="body">
+    <%- include('../shared/nav.ejs') %>
+    <main>
+        <div class="menus__container">
+            <div class="menus__nav">
+                <% if(menus.length > 0) { %>
+                    <ul class="menus__nav-list">
+                        <% menus.forEach(menu => { %>
+                            <li class="menus__nav-item"><a class="menus-scroll__link" href="#<%= menu.title %>"><span><%= menu.title %></span></a></li>
+                        <% }) %>
+                    </ul>
+                    <button type="submit" form="order-form" class="menus__nav-button">Add To Cart</button>
+                <% } else { %>
+                <% } %>
+            </div>
+            <div class="menus__display">
+                <% if(menus.length > 0) { %>
+                    <form id="order-form" method="POST" action="/guest/cart">
+                        <% menus.forEach((menu, y) => { %>
+                            <div class="menu__container" id="<%= menu.title %>">
+                                <input type="hidden" name="menus[<%= y %>][title]" value="<%= menu.title %>" />
+                                <h1><%= menu.title %></h1>
+                                <% for( let i=0; i < menu.items.length; i++) { %>
+                                    <div class="menu__item">
+                                        <img src="<%= menu.items[i].imagePath %>" class="menu-item__img" alt="<%= menu.items[i].title %>"/>
+                                        <div class="menu-item__content">
+                                            <h3><%= menu.items[i].title %></h3>
+                                            <p class="menu-item__desc"><%= menu.items[i].description %> - $<%= menu.items[i].price %></p>
+                                        </div>
+                                        <input type="hidden" name="menus[<%= y %>][items][<%= i %>][_id]" value="<%= menu.items[i]._id %>" />
+                                        <div class="order-input__container">
+                                            <label for="menu.items[<%= y %>][<%= i %>][qty]">Qty</label>
+                                            <input type="number" value="0" class="item-order__input" name="menus[<%= y %>][items][<%= i %>][qty]" id="menu.items[<%= y %>][<%= i %>][qty]" />
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    </form>
+                <% } else { %>
+                    <h1>There are no available menus right now</h1>
+                <% } %>
+            </div>
+        </div>
+    </main>
+<%- include('../shared/end.ejs') %>

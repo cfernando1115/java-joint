@@ -15,10 +15,10 @@
             action="/login">
             <label class="form__label" for="email">email</label>
             <input type="text" class="form__input <%= validationErrors.find(e => e.param === 'email') ? 'input--invalid' : '' %>" 
-                name="email" value="<%= curInput.email %>" />
-            <label class="form__label" for="price">password</label>
+                name="email" id="email" value="<%= curInput.email %>" />
+            <label class="form__label" for="password">password</label>
             <input type="text" class="form__input <%= validationErrors.find(e => e.param === 'password') ? 'input--invalid' : '' %>" 
-                name="password" value="<%= curInput.password %>" />
+                name="password" id="password" value="<%= curInput.password %>" />
             <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <button class="btn btn--submit" type="submit">Login</button>
         </form>
