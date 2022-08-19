@@ -6,6 +6,45 @@
 <body class="body">
 <%- include('../shared/nav.ejs') %>
 <main>
-
+    <div class="cart__container">
+        <a class="continue-shopping__btn" href="/guest/menus">Continue Shopping</a>
+        <% if(items.length > 0) { %>
+            <form id="order-form" method="post" action="/guest/order">
+                <div class="cart__container--header">
+                    <h2>Your Cart Items</h2>
+                    <p>Please review your items and place your order</p>
+                </div>
+                <% for(let i=0; i < items.length; i++) { %>
+                    <% if(!items[i].expired) { %> 
+                        <div class="cart-item__row">
+                            <input type="hidden" name="items[<%= i %>][_id]" value="<%= items[i]._id %>" />
+                            <h4 class="item__row--title"><%= items[i].detail.title %></h4>
+                            <p>Price: $<%= items[i].detail.price %></p>
+                            <div class="cart-input__container">
+                                <label for="items[<%= i %>][qty]">Qty</label>
+                                <input type="number" value="<%= +items[i].qty %>" class="item-order__input" name="items[<%= i %>][qty]" id="items[<%= i %>][qty]" />
+                            </div>
+                        </div>
+                    <% } else { %> 
+                        <p class="cart-item--unavailable">This item is no longer available</p>
+                        <div class="cart-item__row">
+                            <input type="hidden" name="items[<%= i %>][_id]" value="<%= items[i]._id %>" />
+                            <h4 class="item__row--title"><%= items[i].detail.title %></h4>
+                            <p>Price: $<%= items[i].detail.price %></p>
+                            <div class="cart-input__container">
+                                <label for="items[<%= i %>][qty]">Qty</label>
+                                <input type="number" value="<%= +items[i].qty %>" disabled class="item-order__input" name="items[<%= i %>][qty]" id="items[<%= i %>][qty]" />
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>
+                <h4>Total: $<%= items.total %></h4>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <button class="order-submit__btn" type="submit">Place Order</button>
+            </form>
+        <% } else { %>
+            <h2 class="empty-cart__msg">Your cart is empty</h2>
+        <% } %>
+    </div>
 </main>
 <%- include('../shared/end.ejs') %>

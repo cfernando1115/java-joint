@@ -2,6 +2,9 @@ module.exports.open = new Date().setHours(8);
 
 module.exports.close = new Date().setHours(22);
 
+//carts expire 4 hours after first item is added;
+module.exports.cartDuration = 4;
+
 module.exports.scheduleSelectOptions = [
     { display: '12:00 AM', value: '0' },
     { display: '12:30 AM', value: '0.5' },

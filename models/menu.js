@@ -30,7 +30,7 @@ class Menu extends Collection {
         if (menu.items) {
             menu.items = await Promise.all(menu.items
                 .map(async (item, index) => {
-                    item = await Item.findById('items', item._id, { projection: { price: 1, title: 1, description: 1, imagePath: 1 } });
+                    item = await Item.findById('items', item._id, { projection: { price: 1, title: 1, description: 1, imagePath: 1, category: 1 } });
                     item.position = menu.items[index].position;
                     return item;
                 }));

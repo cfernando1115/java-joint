@@ -14,18 +14,18 @@
                             <li class="menus__nav-item"><a class="menus-scroll__link" href="#<%= menu.title %>"><span><%= menu.title %></span></a></li>
                         <% }) %>
                     </ul>
-                    <button type="submit" form="order-form" class="menus__nav-button">Add To Cart</button>
+                    <button type="submit" form="cart-form" class="menus__nav-button">Add To Cart</button>
                 <% } else { %>
                 <% } %>
             </div>
             <div class="menus__display">
                 <% if(menus.length > 0) { %>
-                    <form id="order-form" method="POST" action="/guest/cart">
+                    <form id="cart-form" method="POST" action="/guest/cart">
                         <% menus.forEach((menu, y) => { %>
                             <div class="menu__container" id="<%= menu.title %>">
                                 <input type="hidden" name="menus[<%= y %>][title]" value="<%= menu.title %>" />
                                 <h1><%= menu.title %></h1>
-                                <% for( let i=0; i < menu.items.length; i++) { %>
+                                <% for(let i=0; i < menu.items.length; i++) { %>
                                     <div class="menu__item">
                                         <img src="<%= menu.items[i].imagePath %>" class="menu-item__img" alt="<%= menu.items[i].title %>"/>
                                         <div class="menu-item__content">
@@ -35,7 +35,7 @@
                                         <input type="hidden" name="menus[<%= y %>][items][<%= i %>][_id]" value="<%= menu.items[i]._id %>" />
                                         <div class="order-input__container">
                                             <label for="menu.items[<%= y %>][<%= i %>][qty]">Qty</label>
-                                            <input type="number" value="0" class="item-order__input" name="menus[<%= y %>][items][<%= i %>][qty]" id="menu.items[<%= y %>][<%= i %>][qty]" />
+                                            <input type="number" value="<%= menu.items[i].qty %>" class="item-order__input" name="menus[<%= y %>][items][<%= i %>][qty]" id="menu.items[<%= y %>][<%= i %>][qty]" />
                                         </div>
                                     </div>
                                 <% } %>
