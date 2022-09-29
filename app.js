@@ -5,6 +5,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const dbConnect = require('./util/db').dbConnect;
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 const connectionString = require('./util/mongoConnection').connectionString;
 const sessionSecret = require('./util/expressSessionSecret').sessionSecret;
@@ -21,9 +22,28 @@ app.set('views', 'views');
 const csrfProtection = csrf();
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/stylesheets/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${new Date().getTime()}_${file.originalname}`);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+        return cb(null, true);
+    } 
+    cb(null, false);
+}
+
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
 
 app.use(session({
     secret: sessionSecret,

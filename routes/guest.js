@@ -15,4 +15,8 @@ router.post('/cart', isAuth, guestController.postCart);
 
 router.post('/order', isAuth, guestController.postOrder);
 
+router.get('/orders', isAuth, guestController.getOrders);
+
+router.get('/orders/:orderId', isAuth, guestController.getInvoice);
+
 module.exports = router;

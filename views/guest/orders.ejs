@@ -1,0 +1,28 @@
+<%- include('../shared/head.ejs') %>
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/manager.css">
+<link rel="stylesheet" href="/css/guest.css">
+</head>
+
+<body class="body">
+    <%- include('../shared/nav.ejs') %>
+    <main>
+        <% if(errorMessage) { %>
+            <div class="flash-message flash-message--error"><%= errorMessage %></div>
+        <% } %>
+        <div class="orders__container">
+            <% orders.forEach((order) => { %>
+                <div class="order__container">
+                    <h4 class="order--number">Order #<%= order._id %> - <a class="order__link" href="orders/<%= order._id %>">Receipt</a></h4>
+                    <% order.items.forEach((item) => { %>
+                        <div class="order-item__row">
+                            <p class="order-item--title"><%= item.item.title %></p>
+                            <p class="order-item--price">Price: <%= item.item.price %></p>
+                            <p class="order-item--qty">Qty: <%= item.qty %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+<%- include('../shared/end.ejs') %>

@@ -5,6 +5,7 @@ const Category = require('../models/category');
 const ingRows = require('../util/viewHelpers').ingredientRows;
 const itemRow = require('../util/viewHelpers').itemRows;
 const scheduleOptions = require('../util/menuSchedule').scheduleSelectOptions;
+const fileHelper = require('../util/fileHelper');
 
 const { validationResult } = require('express-validator');
 const { itemRows } = require('../util/viewHelpers');
@@ -63,7 +64,8 @@ module.exports.getEditIngredient = async (req, res, next) => {
 };
 
 module.exports.postAddEditIngredient = async (req, res, next) => {
-    const { title, price, imagePath, id } = req.body;
+    const { title, price, id } = req.body;
+    const image = req.file;
 
     const ing = await Ingredient.findById('ingredients', id);
 
@@ -71,10 +73,42 @@ module.exports.postAddEditIngredient = async (req, res, next) => {
     if (ing && ing.price !== +price) {
         await Item.updateItems(ing._id, price);
     }
-    
-    const updatedIng = new Ingredient(title, price, imagePath, id);
 
-    await updatedIng.save('ingredients');
+    let updateDoc;
+
+    if (ing) {
+        const filter = { _id: ing._id };
+        if (image) {
+            fileHelper.deleteFile(ing.imagePath);
+            const imageUrl = `${image.path}`;
+            updateDoc = {
+                $set: { title: title, price: price, imagePath: imageUrl }
+            };
+        } else {
+            updateDoc = {
+                $set: { title: title, price: price }
+            };
+        }
+
+        await Ingredient.updateIngredient(filter, updateDoc);
+    } else {
+
+        if (!image) {
+            return res.status(422).render('admin/edit-ingredient', {
+                docTitle: 'Add Ingredient',
+                path: '/admin/add-ingredient',
+                editing: false,
+                product: { title, price },
+                hasError: true,
+                errorMessage: 'Invalid image file',
+                validationErrors: []
+            });
+        }
+
+        const updatedIng = new Ingredient(title, price, image, id);
+
+        await updatedIng.save('ingredients');
+    }
 
     res.redirect('/manager/ingredients');
 };

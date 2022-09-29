@@ -39,6 +39,8 @@
             <% if(authenticated) { %>
                 <li class="link-list__item"><a href="/guest/menus" class="nav__link <%= path === '/guest/menus' ? 'nav__link--active' : '' %>">Menus</a></li>
                 <li class="link-list__item"><a href="/guest/cart" class="nav__link <%= path === '/guest/cart' ? 'nav__link--active' : '' %>">Cart</a></li>
+                <li class="link-list__item"><a href="/guest/orders" class="nav__link <%= path === '/guest/orders' ? 'nav__link--active' : '' %>">Orders</a></li>
+
                 <li class="link-list__item">
                     <form action="/logout" method="post">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>" />

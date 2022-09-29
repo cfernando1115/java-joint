@@ -13,10 +13,6 @@ module.exports.addEditItem = [
         .isString()
         .isLength({ min: 2 })
         .withMessage('Category is required'),
-    body('imagePath')
-        .trim()
-        .isURL()
-        .withMessage('Please enter a valid image url'),
     body('ingredients')
         .custom((value) => {
             if (!value || !value.some(val => val._id !== '')) {

@@ -13,6 +13,14 @@ class Ingredient extends Collection {
             ? new mongodb.ObjectId(id)
             : null;
     };
+
+    static async updateIngredient(filter, updateDoc) {
+        const db = getDb();
+        console.log(filter);
+        console.log(updateDoc);
+        await db.collection('ingredients')
+            .updateOne(filter, updateDoc);
+    };
 };
 
 module.exports = Ingredient;

@@ -1,5 +1,7 @@
 node_modules
 package-lock.json
+images/*
+data/invoices/*
 util/mongoConnection.js
 util/expressSessionSecret.js
 util/sendgrid.js

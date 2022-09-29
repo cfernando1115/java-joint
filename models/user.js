@@ -73,16 +73,22 @@ class User extends Collection {
     };
 
     static async populateCart(userId) {
+        const db = getDb();
+
         let cartItems = [];
+        let cartExpires = new Date().setTime(new Date().getTime() + schedule.cartDuration * 60 * 60 * 1000);
 
         const user = await User.findById('users', userId);
 
-        if (user) {
+        if (user && new Date() < new Date(user.cart.expires)) {
             cartItems = await Promise.all(user.cart.items
                 .map(async (item) => {
                     item.detail = await Item.findById('items', item._id, { projection: { price: 1, title: 1, _id: 0 } });
                     return item;
                 }));
+        } else {
+            db.collection('users')
+                .updateOne({ _id: user._id }, { $set: { 'cart.items': [], 'cart.expires': null } });
         }
 
         return cartItems;

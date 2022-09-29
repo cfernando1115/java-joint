@@ -7,7 +7,7 @@
     <main>
         <div class="form-container">
             <h2><%= docTitle %></h2>
-            <form id="add-ingredient-form" class="add-item__form" method="POST" 
+            <form enctype="multipart/form-data" id="add-ingredient-form" class="add-item__form" method="POST" 
                 action="/manager/<% if(editing) { %>edit-ingredient<% } else { %>add-ingredient<% } %>">
                 <label class="form__label" for="title">Title</label>
                 <input type="text" class="form__input" name="title" id="title"
@@ -15,9 +15,17 @@
                 <label class="form__label" for="price">Price</label>
                 <input type="number" step="0.01" class="form__input" name="price" id="price"
                     <% if(editing) { %> value="<%= ingredient.price %>" <% } %>/>
-                <label class="form__label" for="imagePath">Image Path</label>
-                <input type="text" class="form__input" name="imagePath" id="imagePath"
-                    <% if(editing) { %> value="<%= ingredient.imagePath %>" <% } %>/>
+                <div class="form__label" for="image">Image</div>
+                <div class="image-input__container">
+                    <input type="file" name="image" id="image" class="image__input" onchange='uploadImage(this)'
+                        <% if(editing) { %> value="<%= ingredient.imagePath %>" <% } %>/>
+                    <label for="image">
+                        <span id="image-name" class="image--name"></span>
+                        <span class="upload-button">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                        </span>
+                    </label>
+                </div>
                 <% if(editing) { %>
                     <input type="hidden" name="id" value="<%= ingredient._id %>" />
                 <% } %>
@@ -37,5 +45,12 @@
                 return false;
             }
         });
+
+        let imageInput = document.getElementById('image');
+        document.getElementById('image-name').innerHTML = (imageInput.getAttribute('value')).split('_')[1];
     })();
+
+    function uploadImage(target) {
+	    document.getElementById('image-name').innerHTML = target.files[0].name;
+    }
 </script>
